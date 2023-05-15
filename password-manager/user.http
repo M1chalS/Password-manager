@@ -1,0 +1,14 @@
+### Show all users
+GET http://localhost:8000/api/users/
+Content-Type: application/json
+
+### Create new user
+POST http://localhost:8000/api/users/
+Content-Type: application/json
+
+{
+  "name": "Jan",
+  "last_name": "Kowalski",
+  "password": "test1234",
+  "email": "jan.kowalski@test.pl"
+}
