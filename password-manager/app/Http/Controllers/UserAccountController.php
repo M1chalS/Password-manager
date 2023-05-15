@@ -14,7 +14,7 @@ class UserAccountController extends Controller
 
         return response()->json($user, 200);
     }
-    
+
     public function store(Request $request)
     {
         $user = User::create($request->validate([
@@ -22,7 +22,7 @@ class UserAccountController extends Controller
             'last_name' => 'required|string',
             'email' => 'required|unique:users',
             'password' => 'required',
-            'is_admin' => 'boolean|optional'
+            'is_admin' => 'boolean|nullable'
         ]));
 
         return response()->json($user, 201);
