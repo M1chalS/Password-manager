@@ -15,6 +15,4 @@ use App\Http\Controllers\UserAccountController;
 |
 */
 
-Route::resource('users', UserAccountController::class)->only([
-    'index', 'store', 'show', 'update', 'destroy'
-]);
+Route::apiResource('users', UserAccountController::class);
