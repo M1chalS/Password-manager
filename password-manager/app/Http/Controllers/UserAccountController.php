@@ -15,6 +15,11 @@ class UserAccountController extends Controller
         return response()->json($user, 200);
     }
 
+    public function show(User $user)
+    {
+        return response()->json($user, 200);
+    }
+
     public function store(Request $request)
     {
         $user = User::create($request->validate([
@@ -26,5 +31,25 @@ class UserAccountController extends Controller
         ]));
 
         return response()->json($user, 201);
+    }
+
+    public function update(User $user, Request $request)
+    {
+        $user->update($request->validate([
+            'name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => 'required|unique:users,email,' . $user->id,
+            'password' => 'required',
+            'is_admin' => 'boolean|nullable'
+        ]));
+
+        return response()->json($user, 200);
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return response()->json(null, 204);
     }
 }

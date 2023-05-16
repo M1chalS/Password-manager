@@ -15,5 +15,6 @@ use App\Http\Controllers\UserAccountController;
 |
 */
 
-Route::get('/users', [UserAccountController::class, "index"]);
-Route::post('/users', [UserAccountController::class, "store"]);
+Route::resource('users', UserAccountController::class)->only([
+    'index', 'store', 'show', 'update', 'destroy'
+]);
