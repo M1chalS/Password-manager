@@ -11,7 +11,9 @@ class UserAccountTest extends TestCase
 {
     public function test_index(): void
     {
-        $response = $this->get('/api/users');
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/api/users');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -25,13 +27,15 @@ class UserAccountTest extends TestCase
                 'updated_at'
             ]
         ]);
+
+        $user->delete();
     }
 
     public function test_show(): void
     {
         $user = User::factory()->create();
 
-        $response = $this->get('/api/users/' . $user->id);
+        $response = $this->actingAs($user)->get('/api/users/' . $user->id);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -81,7 +85,7 @@ class UserAccountTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->put("/api/users/$user->id", [
+        $response = $this->actingAs($user)->put("/api/users/$user->id", [
             'name' => 'Test',
             'last_name' => 'Test',
             'email' => 'test@example.com',
@@ -113,7 +117,7 @@ class UserAccountTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->delete('/api/users/' . $user->id);
+        $response = $this->actingAs($user)->delete('/api/users/' . $user->id);
 
         $response->assertStatus(204);
 

@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\PasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\UserAccountController;
 
 /*
@@ -16,5 +17,13 @@ use App\Http\Controllers\UserAccountController;
 |
 */
 
-Route::apiResource('users', UserAccountController::class);
-Route::apiResource('passwords', PasswordController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('logout', [AuthController::class, 'destroy'])->name('logout')->middleware('auth');
+
+    Route::apiResource('users', UserAccountController::class)->except(['store']);
+    Route::apiResource('passwords', PasswordController::class);
+});
+
+Route::apiResource('users', UserAccountController::class)->only(['store']);
+
+Route::post('login', [AuthController::class, 'store'])->name('login');

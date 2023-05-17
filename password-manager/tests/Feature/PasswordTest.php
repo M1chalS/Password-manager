@@ -12,8 +12,10 @@ class PasswordTest extends TestCase
 {
     public function test_index(): void
     {
+        $user = User::factory()->create();
+
         $password = Password::factory()->create();
-        $response = $this->get('/api/passwords');
+        $response = $this->actingAs($user)->get('/api/passwords');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -27,13 +29,15 @@ class PasswordTest extends TestCase
         ]);
 
         $password->delete();
+        $user->delete();
     }
 
     public function test_show(): void
     {
+        $user = User::factory()->create();
         $password = Password::factory()->create();
 
-        $response = $this->get("/api/passwords/$password->id");
+        $response = $this->actingAs($user)->get("/api/passwords/$password->id");
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -45,6 +49,7 @@ class PasswordTest extends TestCase
         ]);
 
         $password->delete();
+        $user->delete();
     }
 
     public function test_store(): void
@@ -77,9 +82,10 @@ class PasswordTest extends TestCase
 
     public function test_update(): void
     {
+        $user = User::factory()->create();
         $password = Password::factory()->create();
 
-        $response = $this->put("/api/passwords/$password->id", [
+        $response = $this->actingAs($user)->put("/api/passwords/$password->id", [
             'name' => 'new name',
             'password' => 'password4321'
         ]);
@@ -94,15 +100,19 @@ class PasswordTest extends TestCase
         ]);
 
         $password->delete();
+        $user->delete();
     }
 
     public function test_destroy(): void
     {
+        $user = User::factory()->create();
         $password = Password::factory()->create();
 
-        $response = $this->delete("/api/passwords/$password->id");
+        $response = $this->actingAs($user)->delete("/api/passwords/$password->id");
 
         $response->assertStatus(204);
         $this->assertDatabaseMissing('passwords', ['id' => $password->id]);
+
+        $user->delete();
     }
 }
