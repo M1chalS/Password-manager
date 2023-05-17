@@ -19,10 +19,12 @@ class PasswordController extends Controller
 
     public function store(Request $request)
     {
-        $password = Password::create($request->validate([
-            'name' => 'required|string',
-            'password' => 'required|string'
-        ]));
+        $password = $request->user()->passwords()->create(
+            $request->validate([
+                'name' => 'required|string',
+                'password' => 'required|string'
+            ])
+        );
 
         return response()->json($password, 201);
     }

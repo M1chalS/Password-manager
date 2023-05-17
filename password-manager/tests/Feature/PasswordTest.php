@@ -2,10 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\Password;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\Password;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PasswordTest extends TestCase
 {
@@ -48,7 +49,9 @@ class PasswordTest extends TestCase
 
     public function test_store(): void
     {
-        $response = $this->post('/api/passwords', [
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post('/api/passwords', [
             'name' => 'Test',
             'password' => 'test1234',
         ]);
@@ -68,6 +71,7 @@ class PasswordTest extends TestCase
         $this->assertEquals($response->json('name'), $password->name);
         $this->assertEquals($response->json('password'), $password->password);
 
+        $user->delete();
         $password->delete();
     }
 

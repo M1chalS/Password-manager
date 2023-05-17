@@ -19,6 +19,7 @@ class PasswordFactory extends Factory
         return [
             'name' => fake()->userName(),
             'password' => "placeholder",
+            'user_id' => fake()->numberBetween(1, 8),
         ];
     }
 }
