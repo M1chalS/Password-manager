@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserAccountController;
@@ -16,3 +17,4 @@ use App\Http\Controllers\UserAccountController;
 */
 
 Route::apiResource('users', UserAccountController::class);
+Route::apiResource('passwords', PasswordController::class)->only(['index', 'show']);
