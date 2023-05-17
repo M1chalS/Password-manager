@@ -3,11 +3,11 @@ POST http://localhost:8000/api/login
 Content-Type: application/json
 
 {
-    "email": "mccullough.emily@example.org",
+    "email": "test@example.com",
     "password": "password"
 }
 
 ### Logout
-POST http://localhost:8000/api/logout
+DELETE http://localhost:8000/api/logout
 Content-Type: application/json
 Authorization: Bearer TOKEN

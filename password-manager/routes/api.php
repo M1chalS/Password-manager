@@ -18,7 +18,7 @@ use App\Http\Controllers\UserAccountController;
 */
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('logout', [AuthController::class, 'destroy'])->name('logout')->middleware('auth');
+    Route::delete('logout', [AuthController::class, 'destroy'])->name('logout')->middleware('auth');
 
     Route::apiResource('users', UserAccountController::class)->except(['store']);
     Route::apiResource('passwords', PasswordController::class);

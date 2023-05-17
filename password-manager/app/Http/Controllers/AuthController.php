@@ -9,13 +9,6 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function show(Request $request)
-    {
-        $user = Auth::user();
-
-        return response(compact('user'), 200);
-    }
-
     public function store(Request $request)
     {
         if (!Auth::attempt($request->validate([

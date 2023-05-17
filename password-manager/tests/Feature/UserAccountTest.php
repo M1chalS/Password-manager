@@ -88,7 +88,7 @@ class UserAccountTest extends TestCase
         $response = $this->actingAs($user)->put("/api/users/$user->id", [
             'name' => 'Test',
             'last_name' => 'Test',
-            'email' => 'test@example.com',
+            'email' => 'test2@example.com',
             'password' => 'test1234',
         ]);
 
