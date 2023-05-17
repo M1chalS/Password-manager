@@ -10,9 +10,7 @@ class UserAccountController extends Controller
 {
     public function index()
     {
-        $user = User::all();
-
-        return response()->json($user, 200);
+        return response()->json(User::all(), 200);
     }
 
     public function show(User $user)

@@ -17,4 +17,4 @@ use App\Http\Controllers\UserAccountController;
 */
 
 Route::apiResource('users', UserAccountController::class);
-Route::apiResource('passwords', PasswordController::class)->only(['index', 'show']);
+Route::apiResource('passwords', PasswordController::class);

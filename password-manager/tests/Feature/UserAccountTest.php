@@ -81,7 +81,7 @@ class UserAccountTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->put('/api/users/' . $user->id, [
+        $response = $this->put("/api/users/$user->id", [
             'name' => 'Test',
             'last_name' => 'Test',
             'email' => 'test@example.com',
