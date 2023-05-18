@@ -97,16 +97,13 @@ class UserAccountTest extends TestCase
             'name',
             'last_name',
             'email',
-            'is_admin',
-            'created_at',
-            'updated_at'
         ]);
+
 
         $this->assertEquals($user->id, $response->json('id'));
         $this->assertEquals($user->name, $response->json('name'));
         $this->assertEquals($user->last_name, $response->json('last_name'));
         $this->assertEquals($user->email, $response->json('email'));
-        $this->assertEquals($user->is_admin, $response->json('is_admin'));
 
         $user->delete();
     }
@@ -134,14 +131,6 @@ class UserAccountTest extends TestCase
         ]);
 
         $response->assertStatus(201);
-        $response->assertJsonStructure([
-            'id',
-            'name',
-            'last_name',
-            'email',
-            'created_at',
-            'updated_at'
-        ]);
 
         $user = User::find($response->json('id'));
 
@@ -206,8 +195,6 @@ class UserAccountTest extends TestCase
             'name',
             'last_name',
             'email',
-            'created_at',
-            'updated_at'
         ]);
 
         $user = User::find($response->json('id'));

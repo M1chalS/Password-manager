@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 
 class UserAccountController extends Controller
 {
@@ -14,12 +15,12 @@ class UserAccountController extends Controller
 
     public function index()
     {
-        return response()->json(User::all(), 200);
+        return response(UserResource::collection(User::all()), 200);
     }
 
     public function show(User $user)
     {
-        return response()->json($user, 200);
+        return response(new UserResource($user), 200);
     }
 
     public function store(Request $request)
@@ -35,7 +36,7 @@ class UserAccountController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
 
-        return response()->json($user, 201);
+        return response(new UserResource($user), 201);
     }
 
     public function update(User $user, Request $request)
@@ -51,7 +52,7 @@ class UserAccountController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
 
-        return response()->json($user, 200);
+        return response(new UserResource($user), 200);
     }
 
     public function destroy(User $user)

@@ -4,13 +4,14 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Expr\Cast\Array_;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PhpParser\Node\Expr\Cast\Array_;
 
 class AuthTest extends TestCase
 {
-    public function test_login(): void
+    public function test_login_with_correct_credentials(): void
     {
         /** @var User $user */
         $user = User::factory()->create();
@@ -35,18 +36,38 @@ class AuthTest extends TestCase
         $user->delete();
     }
 
-    // public function test_logout(): void
-    // {
-    //     $user = User::factory()->create();
+    public function test_login_with_incorrect_credentials(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
 
-    //     $token = $user->createToken('main')->plainTextToken;
+        $response = $this->post('/api/login', [
+            'email' => $user->email,
+            'password' => 'badpassword'
+        ]);
 
-    //     $response = $this->actingAs($user)->delete('/api/logout', [], [
-    //         'Accept' => 'application/json',
-    //         'Authorization' => 'Bearer ' . $token
-    //     ]);
+        $response->assertStatus(302);
 
-    //     $response->assertStatus(204);
-    //     $user->delete();
-    // }
+        $user->delete();
+    }
+
+    public function test_logout(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post('/api/login', [
+            'email' => $user->email,
+            'password' => 'password'
+        ]);
+
+        $token = "Bearer " . $response->json('token');
+
+        $response = $this->delete('/api/logout', [], [
+            'Accept' => 'application/json',
+            'Authorization' => $token
+        ]);
+
+        $response->assertStatus(204);
+        $user->delete();
+    }
 }

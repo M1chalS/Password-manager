@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Password;
 use Illuminate\Http\Request;
+use App\Http\Resources\PasswordResource;
 
 class PasswordController extends Controller
 {
@@ -14,12 +15,12 @@ class PasswordController extends Controller
 
     public function index()
     {
-        return response()->json(Password::all(), 200);
+        return response(PasswordResource::collection(Password::all()), 200);
     }
 
     public function show(Password $password)
     {
-        return response()->json($password, 200);
+        return response(new PasswordResource($password), 200);
     }
 
     public function store(Request $request)
@@ -31,7 +32,7 @@ class PasswordController extends Controller
             ])
         );
 
-        return response()->json($password, 201);
+        return response(new PasswordResource($password), 201);
     }
 
     public function update(Password $password, Request $request)
@@ -41,7 +42,7 @@ class PasswordController extends Controller
             'password' => 'required|string'
         ]));
 
-        return response()->json($password, 200);
+        return response(new PasswordResource($password), 200);
     }
 
     public function destroy(Password $password, Request $request)

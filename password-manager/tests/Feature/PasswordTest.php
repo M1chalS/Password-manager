@@ -105,7 +105,9 @@ class PasswordTest extends TestCase
     public function test_show_as_unauthorized_user(): void
     {
         $user = User::factory()->create();
-        $password = Password::factory()->create();
+        $password = Password::factory()->create([
+            'user_id' => 1
+        ]);
 
         $response = $this->actingAs($user)->get("/api/passwords/$password->id");
 
