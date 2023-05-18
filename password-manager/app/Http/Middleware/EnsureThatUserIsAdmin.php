@@ -19,7 +19,7 @@ class EnsureThatUserIsAdmin
         $user = $request->user();
 
         if ($user && !$user->is_admin) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['message' => 'Unauthorized'], 401);
         }
 
         return $next($request);

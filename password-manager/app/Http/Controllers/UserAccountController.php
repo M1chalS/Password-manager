@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class UserAccountController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
+
     public function index()
     {
         return response()->json(User::all(), 200);
@@ -52,12 +56,6 @@ class UserAccountController extends Controller
 
     public function destroy(User $user)
     {
-        /** @var User $auth_user */
-        $auth_user = auth()->user();
-
-        if (!$auth_user->tokenCan('admin'))
-            return response()->json(['error' => 'Unauthorized'], 401);
-
         $user->delete();
 
         return response()->json(null, 204);

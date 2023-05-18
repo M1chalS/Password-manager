@@ -17,12 +17,12 @@ Accept: application/json
   "name": "Jan",
   "last_name": "Kowalski",
   "password": "test1234",
-  "email": "jann.kowalski@test.pl",
+  "email": "jan.kowalski@test.pl",
   "is_admin": true
 }
 
 ### Update user
-PUT http://localhost:8000/api/users/61
+PUT http://localhost:8000/api/users/id
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer TOKEN

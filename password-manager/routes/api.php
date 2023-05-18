@@ -31,3 +31,9 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::apiResource('users', UserAccountController::class)->only(['store']);
 
 Route::post('login', [AuthController::class, 'store'])->name('login');
+
+Route::fallback(function () {
+    return response()->json([
+        'message' => 'Route Not Found'
+    ], 404);
+});

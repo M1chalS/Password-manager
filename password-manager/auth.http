@@ -4,8 +4,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "jann.kowalski@test.pl",
-    "password": "test1234"
+    "email": "test@example.com",
+    "password": "password"
 }
 
 ### Logout

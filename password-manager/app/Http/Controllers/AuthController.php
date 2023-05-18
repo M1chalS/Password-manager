@@ -16,7 +16,7 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]), true)) {
             return response()->json([
-                "error" => "The provided credentials are incorrect."
+                "message" => "The provided credentials are incorrect."
             ], 422);
         }
 

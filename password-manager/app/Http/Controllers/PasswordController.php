@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class PasswordController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Password::class, 'password');
+    }
+
     public function index()
     {
         return response()->json(Password::all(), 200);
@@ -41,12 +46,6 @@ class PasswordController extends Controller
 
     public function destroy(Password $password, Request $request)
     {
-        /** @var User $auth_user */
-        $auth_user = $request->user();
-
-        if ($auth_user->id !== $password->user_id && !$auth_user->is_admin)
-            return response()->json(['message' => 'Unauthorized'], 401);
-
         $password->delete();
 
         return response()->json(null, 204);

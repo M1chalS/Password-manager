@@ -51,16 +51,18 @@ class PasswordTest extends TestCase
 
         $response->assertStatus(401);
         $response->assertJsonStructure([
-            'error'
+            'message'
         ]);
 
         $password->delete();
         $user->delete();
     }
 
-    public function test_show(): void
+    public function test_show_as_admin(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
         $password = Password::factory()->create();
 
         $response = $this->actingAs($user)->get("/api/passwords/$password->id");
@@ -78,11 +80,44 @@ class PasswordTest extends TestCase
         $user->delete();
     }
 
+    public function test_show_as_authorized_user(): void
+    {
+        $user = User::factory()->create();
+        $password = Password::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $response = $this->actingAs($user)->get("/api/passwords/$password->id");
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'id',
+            'name',
+            'password',
+            'created_at',
+            'updated_at'
+        ]);
+
+        $password->delete();
+        $user->delete();
+    }
+
+    public function test_show_as_unauthorized_user(): void
+    {
+        $user = User::factory()->create();
+        $password = Password::factory()->create();
+
+        $response = $this->actingAs($user)->get("/api/passwords/$password->id");
+
+        $response->assertStatus(403);
+
+        $password->delete();
+        $user->delete();
+    }
+
     public function test_store(): void
     {
-        $user = User::factory()->create([
-            'is_admin' => true
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/api/passwords', [
             'name' => 'Test',
@@ -108,7 +143,7 @@ class PasswordTest extends TestCase
         $password->delete();
     }
 
-    public function test_update(): void
+    public function test_update_as_admin(): void
     {
         $user = User::factory()->create([
             'is_admin' => true
@@ -133,18 +168,44 @@ class PasswordTest extends TestCase
         $user->delete();
     }
 
-    public function test_destroy_as_user(): void
+    public function test_update_as_authorized_user(): void
     {
         $user = User::factory()->create();
         $password = Password::factory()->create([
             'user_id' => $user->id
         ]);
 
-        $response = $this->actingAs($user)->delete("/api/passwords/$password->id");
+        $response = $this->actingAs($user)->put("/api/passwords/$password->id", [
+            'name' => 'new name',
+            'password' => 'password4321'
+        ]);
 
-        $response->assertStatus(204);
-        $this->assertDatabaseMissing('passwords', ['id' => $password->id]);
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'id',
+            'name',
+            'password',
+            'created_at',
+            'updated_at'
+        ]);
 
+        $password->delete();
+        $user->delete();
+    }
+
+    public function test_update_as_unauthorized_user(): void
+    {
+        $user = User::factory()->create();
+        $password = Password::factory()->create();
+
+        $response = $this->actingAs($user)->put("/api/passwords/$password->id", [
+            'name' => 'new name',
+            'password' => 'password4321'
+        ]);
+
+        $response->assertStatus(403);
+
+        $password->delete();
         $user->delete();
     }
 
@@ -159,6 +220,34 @@ class PasswordTest extends TestCase
 
         $response->assertStatus(204);
         $this->assertDatabaseMissing('passwords', ['id' => $password->id]);
+
+        $user->delete();
+    }
+
+    public function test_destroy_as_authorized_user(): void
+    {
+        $user = User::factory()->create();
+        $password = Password::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $response = $this->actingAs($user)->delete("/api/passwords/$password->id");
+
+        $response->assertStatus(204);
+        $this->assertDatabaseMissing('passwords', ['id' => $password->id]);
+
+        $user->delete();
+    }
+
+    public function test_destroy_as_unauthorized_user(): void
+    {
+        $user = User::factory()->create();
+        $password = Password::factory()->create();
+
+        $response = $this->actingAs($user)->delete("/api/passwords/$password->id");
+
+        $response->assertStatus(403);
+        $this->assertDatabaseHas('passwords', ['id' => $password->id]);
 
         $user->delete();
     }
