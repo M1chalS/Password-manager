@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ShareController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\UserAccountController;
 
@@ -21,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('logout', [AuthController::class, 'destroy'])->name('logout');
     Route::apiResource('passwords', PasswordController::class)->except(['index']);
     Route::apiResource('users', UserAccountController::class)->only(['show', 'update']);
+    Route::apiResource('shares', ShareController::class)->only(['store', 'destroy']);
 
     Route::middleware('admin')->group(function () {
         Route::apiResource('passwords', PasswordController::class)->only(['index']);

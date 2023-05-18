@@ -1,0 +1,14 @@
+### Share password
+POST http://localhost:8000/api/shares
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer TOKEN
+
+{
+    "password_id": 1
+}
+
+### Delete share
+DELETE http://localhost:8000/api/shares/id
+Accept: application/json
+Authorization: Bearer TOKEN

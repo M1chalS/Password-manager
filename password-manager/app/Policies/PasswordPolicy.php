@@ -31,7 +31,7 @@ class PasswordPolicy
      */
     public function view(User $user, Password $password): bool
     {
-        return $user->id === $password->user_id;
+        return $user->id === $password->user_id || $password->shares->contains('user_id', $user->id);
     }
 
     /**
