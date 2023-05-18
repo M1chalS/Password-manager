@@ -10,7 +10,7 @@ use PhpParser\Node\Expr\Cast\Array_;
 
 class AuthTest extends TestCase
 {
-    public function test_login(): array
+    public function test_login(): void
     {
         /** @var User $user */
         $user = User::factory()->create();
@@ -32,15 +32,17 @@ class AuthTest extends TestCase
             'token'
         ]);
 
-        return [$user, $response->json('token')];
+        $user->delete();
     }
 
     // public function test_logout(): void
     // {
-    //     /** @var User $user */
-    //     [$user, $token] = $this->test_login();
+    //     $user = User::factory()->create();
+
+    //     $token = $user->createToken('main')->plainTextToken;
 
     //     $response = $this->actingAs($user)->delete('/api/logout', [], [
+    //         'Accept' => 'application/json',
     //         'Authorization' => 'Bearer ' . $token
     //     ]);
 

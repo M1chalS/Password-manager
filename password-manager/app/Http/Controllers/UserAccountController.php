@@ -28,6 +28,9 @@ class UserAccountController extends Controller
             'is_admin' => 'boolean|nullable'
         ]));
 
+        $user->password = bcrypt($request->password);
+        $user->save();
+
         return response()->json($user, 201);
     }
 
@@ -41,11 +44,20 @@ class UserAccountController extends Controller
             'is_admin' => 'boolean|nullable'
         ]));
 
+        $user->password = bcrypt($request->password);
+        $user->save();
+
         return response()->json($user, 200);
     }
 
     public function destroy(User $user)
     {
+        /** @var User $auth_user */
+        $auth_user = auth()->user();
+
+        if (!$auth_user->tokenCan('admin'))
+            return response()->json(['error' => 'Unauthorized'], 401);
+
         $user->delete();
 
         return response()->json(null, 204);

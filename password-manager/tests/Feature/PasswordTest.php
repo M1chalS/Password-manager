@@ -10,12 +10,17 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PasswordTest extends TestCase
 {
-    public function test_index(): void
+    public function test_index_as_admin(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
 
         $password = Password::factory()->create();
-        $response = $this->actingAs($user)->get('/api/passwords');
+        $response = $this->actingAs($user)->get('/api/passwords', [], [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $user->createToken('main')->plainTextToken
+        ]);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -26,6 +31,27 @@ class PasswordTest extends TestCase
                 'created_at',
                 'updated_at'
             ]
+        ]);
+
+        $password->delete();
+        $user->delete();
+    }
+
+    public function test_index_as_user(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => false
+        ]);
+
+        $password = Password::factory()->create();
+        $response = $this->actingAs($user)->get('/api/passwords', [], [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $user->createToken('main')->plainTextToken
+        ]);
+
+        $response->assertStatus(401);
+        $response->assertJsonStructure([
+            'error'
         ]);
 
         $password->delete();
@@ -54,7 +80,9 @@ class PasswordTest extends TestCase
 
     public function test_store(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
 
         $response = $this->actingAs($user)->post('/api/passwords', [
             'name' => 'Test',
@@ -82,7 +110,9 @@ class PasswordTest extends TestCase
 
     public function test_update(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
         $password = Password::factory()->create();
 
         $response = $this->actingAs($user)->put("/api/passwords/$password->id", [
@@ -103,9 +133,26 @@ class PasswordTest extends TestCase
         $user->delete();
     }
 
-    public function test_destroy(): void
+    public function test_destroy_as_user(): void
     {
         $user = User::factory()->create();
+        $password = Password::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $response = $this->actingAs($user)->delete("/api/passwords/$password->id");
+
+        $response->assertStatus(204);
+        $this->assertDatabaseMissing('passwords', ['id' => $password->id]);
+
+        $user->delete();
+    }
+
+    public function test_destroy_as_admin(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
         $password = Password::factory()->create();
 
         $response = $this->actingAs($user)->delete("/api/passwords/$password->id");

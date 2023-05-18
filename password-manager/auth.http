@@ -1,13 +1,15 @@
 ### Login
 POST http://localhost:8000/api/login
+Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "test@example.com",
-    "password": "password"
+    "email": "jann.kowalski@test.pl",
+    "password": "test1234"
 }
 
 ### Logout
 DELETE http://localhost:8000/api/logout
+Accept: application/json
 Content-Type: application/json
 Authorization: Bearer TOKEN

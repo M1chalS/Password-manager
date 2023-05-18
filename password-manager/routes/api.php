@@ -18,10 +18,14 @@ use App\Http\Controllers\UserAccountController;
 */
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::delete('logout', [AuthController::class, 'destroy'])->name('logout')->middleware('auth');
+    Route::delete('logout', [AuthController::class, 'destroy'])->name('logout');
+    Route::apiResource('passwords', PasswordController::class)->except(['index']);
+    Route::apiResource('users', UserAccountController::class)->only(['show', 'update']);
 
-    Route::apiResource('users', UserAccountController::class)->except(['store']);
-    Route::apiResource('passwords', PasswordController::class);
+    Route::middleware('admin')->group(function () {
+        Route::apiResource('passwords', PasswordController::class)->only(['index']);
+        Route::apiResource('users', UserAccountController::class)->only(['index', 'destroy']);
+    });
 });
 
 Route::apiResource('users', UserAccountController::class)->only(['store']);

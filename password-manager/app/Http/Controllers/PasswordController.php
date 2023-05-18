@@ -39,8 +39,14 @@ class PasswordController extends Controller
         return response()->json($password, 200);
     }
 
-    public function destroy(Password $password)
+    public function destroy(Password $password, Request $request)
     {
+        /** @var User $auth_user */
+        $auth_user = $request->user();
+
+        if ($auth_user->id !== $password->user_id && !$auth_user->is_admin)
+            return response()->json(['message' => 'Unauthorized'], 401);
+
         $password->delete();
 
         return response()->json(null, 204);

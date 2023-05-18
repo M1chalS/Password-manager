@@ -9,11 +9,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserAccountTest extends TestCase
 {
-    public function test_index(): void
+    public function test_index_as_admin(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
 
-        $response = $this->actingAs($user)->get('/api/users');
+        $response = $this->actingAs($user)->get('/api/users', [], [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $user->createToken('main')->plainTextToken
+        ]);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -26,6 +31,25 @@ class UserAccountTest extends TestCase
                 'created_at',
                 'updated_at'
             ]
+        ]);
+
+        $user->delete();
+    }
+
+    public function test_index_as_user(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => false
+        ]);
+
+        $response = $this->actingAs($user)->get('/api/users', [], [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $user->createToken('main')->plainTextToken
+        ]);
+
+        $response->assertStatus(401);
+        $response->assertJsonStructure([
+            'error'
         ]);
 
         $user->delete();
@@ -113,16 +137,47 @@ class UserAccountTest extends TestCase
         $user->delete();
     }
 
-    public function test_destroy(): void
+    public function test_destroy_as_admin(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+        $user2 = User::factory()->create();
 
-        $response = $this->actingAs($user)->delete('/api/users/' . $user->id);
+        $response = $this->actingAs($user)->delete('/api/users/' . $user2->id, [], [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $user->createToken('main')->plainTextToken
+        ]);
 
         $response->assertStatus(204);
 
-        $user = User::find($user->id);
+        $user2 = User::find($user2->id);
 
-        $this->assertNull($user);
+        $this->assertNull($user2);
+        $user->delete();
+    }
+
+    public function test_destroy_as_user(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => false
+        ]);
+        $user2 = User::factory()->create();
+
+        $response = $this->actingAs($user)->delete('/api/users/' . $user2->id, [], [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $user->createToken('main')->plainTextToken
+        ]);
+
+        $response->assertStatus(401);
+        $response->assertJsonStructure([
+            'error'
+        ]);
+
+        $user2 = User::find($user2->id);
+
+        $this->assertNotNull($user2);
+        $user->delete();
+        $user2->delete();
     }
 }

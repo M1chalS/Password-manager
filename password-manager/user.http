@@ -1,39 +1,41 @@
 ### Get all users
 GET http://localhost:8000/api/users/
-Content-Type: application/json
+Accept: application/json
 Authorization: Bearer TOKEN
 
 ### Show user
 GET http://localhost:8000/api/users/id
-Content-Type: application/json
+Accept: application/json
 Authorization: Bearer TOKEN
 
 ### Create new user
 POST http://localhost:8000/api/users/
 Content-Type: application/json
-Authorization: Bearer TOKEN
+Accept: application/json
 
 {
   "name": "Jan",
   "last_name": "Kowalski",
   "password": "test1234",
-  "email": "jan.kowalski@test.pl"
+  "email": "jann.kowalski@test.pl",
+  "is_admin": true
 }
 
 ### Update user
-PUT http://localhost:8000/api/users/id
+PUT http://localhost:8000/api/users/61
 Content-Type: application/json
+Accept: application/json
 Authorization: Bearer TOKEN
 
 {
   "name": "Jan",
   "last_name": "Kowalski",
   "password": "test1234",
-  "email": "jan.kowalski@test.pl",
+  "email": "jann.kowalski@test.pl",
   "is_admin": true
 }
 
 ### Delete user
 DELETE http://localhost:8000/api/users/id
-Content-Type: application/json
+Accept: application/json
 Authorization: Bearer TOKEN

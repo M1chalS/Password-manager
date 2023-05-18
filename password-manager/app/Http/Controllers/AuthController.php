@@ -15,15 +15,15 @@ class AuthController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string'
         ]), true)) {
-            return response()->json(["error" => [
-                "message" => "The provided credentials are incorrect."
-            ]], 422);
+            return response()->json([
+                "error" => "The provided credentials are incorrect."
+            ], 422);
         }
 
         /** @var User $user */
         $user = Auth::user();
 
-        $token = $user->createToken('main')->plainTextToken;
+        $token = $user->createToken('main', ['server:update'])->plainTextToken;
 
         return response(compact('user', 'token'), 200);
     }
