@@ -32,6 +32,9 @@ class PasswordController extends Controller
             ])
         );
 
+        $password->encrypt($password->password);
+        $password->save();
+
         return response(new PasswordResource($password), 201);
     }
 
@@ -41,6 +44,9 @@ class PasswordController extends Controller
             'name' => 'required|string',
             'password' => 'required|string'
         ]));
+
+        $password->encrypt($password->password);
+        $password->save();
 
         return response(new PasswordResource($password), 200);
     }

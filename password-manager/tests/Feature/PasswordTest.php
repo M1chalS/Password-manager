@@ -253,4 +253,18 @@ class PasswordTest extends TestCase
 
         $user->delete();
     }
+
+    public function test_decrypt(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post('/api/passwords', [
+            'name' => 'Test',
+            'password' => 'test1234',
+        ]);
+
+        $password = Password::find($response->json('id'));
+
+        $this->assertEquals('test1234', $password->decrypt());
+    }
 }
