@@ -19,6 +19,7 @@ class ShareFactory extends Factory
         return [
             'password_id' => \App\Models\Password::factory()->create()->id,
             'user_id' => \App\Models\User::factory()->create()->id,
+            'shared_by' => \App\Models\User::factory()->create()->id,
         ];
     }
 }

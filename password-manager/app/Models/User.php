@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Share;
+use App\Models\Password;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -47,5 +49,10 @@ class User extends Authenticatable
     public function passwords(): HasMany
     {
         return $this->hasMany(Password::class, 'user_id');
+    }
+
+    public function sharedPasswords(): HasMany
+    {
+        return $this->hasMany(Share::class, 'user_id');
     }
 }

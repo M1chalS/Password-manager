@@ -29,7 +29,7 @@ class SharePolicy
      */
     public function view(User $user, Share $share): bool
     {
-        return true;
+        return $user->id === $share->user_id || $user->id === $share->shared_by;
     }
 
     /**
@@ -45,9 +45,7 @@ class SharePolicy
      */
     public function delete(User $user, Share $share): bool
     {
-        $password = Password::findOrFail($share->password_id);
-
-        return $user->id === $share->user_id || $user->id === $password->user_id;
+        return $user->id === $share->user_id || $user->id === $share->shared_by;
     }
 
     /**

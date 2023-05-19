@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Password;
 use Illuminate\Http\Request;
 use App\Http\Resources\PasswordResource;
@@ -13,7 +14,18 @@ class PasswordController extends Controller
         $this->authorizeResource(Password::class, 'password');
     }
 
-    public function index()
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $passwords = Password::whereIn('id', $user->sharedPasswords->map(fn ($password) => $password->password_id))->get();
+
+        return response([
+            "personal" => PasswordResource::collection($user->passwords),
+            "shared" => PasswordResource::collection($passwords)
+        ], 200);
+    }
+
+    public function indexAdmin()
     {
         return response(PasswordResource::collection(Password::all()), 200);
     }

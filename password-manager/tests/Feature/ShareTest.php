@@ -192,7 +192,8 @@ class ShareTest extends TestCase
 
         $share = Share::factory()->create([
             'password_id' => $password->id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
+            'shared_by' => $user2->id
         ]);
 
         $response = $this->actingAs($user2)->delete("/api/shares/$share->id");

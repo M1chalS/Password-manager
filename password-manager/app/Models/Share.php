@@ -12,6 +12,22 @@ class Share extends Model
 
     protected $fillable = [
         'password_id',
-        'user_id'
+        'user_id',
+        'shared_by'
     ];
+
+    public function password(): BelongsTo
+    {
+        return $this->belongsTo(Password::class, 'password_id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function sharedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'shared_by');
+    }
 }

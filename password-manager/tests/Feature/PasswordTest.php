@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Share;
 use App\Models\Password;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,8 +16,21 @@ class PasswordTest extends TestCase
         $user = User::factory()->create([
             'is_admin' => true
         ]);
+        $user2 = User::factory()->create();
 
-        $password = Password::factory()->create();
+        $password1 = Password::factory()->create([
+            'user_id' => $user->id
+        ]);
+        $password2 = Password::factory()->create([
+            'user_id' => $user2->id
+        ]);
+
+        $share = Share::factory()->create([
+            'password_id' => $password2->id,
+            'user_id' => $user->id,
+            'shared_by' => $user2->id
+        ]);
+
         $response = $this->actingAs($user)->get('/api/passwords', [], [
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $user->createToken('main')->plainTextToken
@@ -24,7 +38,61 @@ class PasswordTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            '*' => [
+            'personal' => [
+                "*" => [
+                    'id',
+                    'name',
+                    'password',
+                    'created_at',
+                    'updated_at'
+                ]
+            ],
+            'shared' => [
+                "*" => [
+                    'id',
+                    'name',
+                    'password',
+                    'created_at',
+                    'updated_at'
+                ]
+            ]
+        ]);
+
+        $password1->delete();
+        $password2->delete();
+        $user->delete();
+        $user2->delete();
+        $share->delete();
+    }
+
+    public function test_index_for_admin(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+        $user2 = User::factory()->create();
+
+        $password1 = Password::factory()->create([
+            'user_id' => $user->id
+        ]);
+        $password2 = Password::factory()->create([
+            'user_id' => $user2->id
+        ]);
+
+        $share = Share::factory()->create([
+            'password_id' => $password2->id,
+            'user_id' => $user->id,
+            'shared_by' => $user2->id
+        ]);
+
+        $response = $this->actingAs($user)->get('/api/passwords-admin', [], [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $user->createToken('main')->plainTextToken
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            "*" => [
                 'id',
                 'name',
                 'password',
@@ -33,29 +101,43 @@ class PasswordTest extends TestCase
             ]
         ]);
 
-        $password->delete();
+        $password1->delete();
+        $password2->delete();
         $user->delete();
+        $user2->delete();
+        $share->delete();
     }
 
-    public function test_index_as_user(): void
+    public function test_index_for_admin_as_user(): void
     {
-        $user = User::factory()->create([
-            'is_admin' => false
+        $user = User::factory()->create();
+        $user2 = User::factory()->create();
+
+        $password1 = Password::factory()->create([
+            'user_id' => $user->id
+        ]);
+        $password2 = Password::factory()->create([
+            'user_id' => $user2->id
         ]);
 
-        $password = Password::factory()->create();
-        $response = $this->actingAs($user)->get('/api/passwords', [], [
+        $share = Share::factory()->create([
+            'password_id' => $password2->id,
+            'user_id' => $user->id,
+            'shared_by' => $user2->id
+        ]);
+
+        $response = $this->actingAs($user)->get('/api/passwords-admin', [], [
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $user->createToken('main')->plainTextToken
         ]);
 
         $response->assertStatus(401);
-        $response->assertJsonStructure([
-            'message'
-        ]);
 
-        $password->delete();
+        $password1->delete();
+        $password2->delete();
         $user->delete();
+        $user2->delete();
+        $share->delete();
     }
 
     public function test_show_as_admin(): void

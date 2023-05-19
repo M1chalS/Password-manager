@@ -63,7 +63,8 @@ class ShareController extends Controller
 
         $share = Share::create([
             'password_id' => $request->password_id,
-            'user_id' => $request->user_id
+            'user_id' => $request->user_id,
+            'shared_by' => $request->user()->id
         ]);
 
         return response()->json($share, 201);
