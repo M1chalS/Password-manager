@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Password;
 use Illuminate\Auth\Access\Response;
 use App\Models\Share;
 use App\Models\User;
@@ -44,7 +45,9 @@ class SharePolicy
      */
     public function delete(User $user, Share $share): bool
     {
-        return $user->id === $share->user_id;
+        $password = Password::findOrFail($share->password_id);
+
+        return $user->id === $share->user_id || $user->id === $password->user_id;
     }
 
     /**
