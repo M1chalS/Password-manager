@@ -22,11 +22,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('logout', [AuthController::class, 'destroy'])->name('logout');
     Route::apiResource('passwords', PasswordController::class)->except(['index']);
     Route::apiResource('users', UserAccountController::class)->only(['show', 'update']);
-    Route::apiResource('shares', ShareController::class)->only(['store', 'destroy']);
+    Route::apiResource('shares', ShareController::class)->only(['index', 'show', 'store', 'destroy']);
 
     Route::middleware('admin')->group(function () {
         Route::apiResource('passwords', PasswordController::class)->only(['index']);
         Route::apiResource('users', UserAccountController::class)->only(['index', 'destroy']);
+        Route::get('shares-admin', [ShareController::class, 'indexAdmin']);
     });
 });
 

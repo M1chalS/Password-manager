@@ -1,11 +1,26 @@
-### Share password
-POST http://localhost:8000/api/shares
-Content-Type: application/json
+### Show all shares for current user
+GET http://localhost:8000/api/shares
 Accept: application/json
 Authorization: Bearer TOKEN
 
+### Show all shares for admin
+GET http://localhost:8000/api/shares-admin
+Accept: application/json
+Authorization: Bearer TOKEN
+
+### Show single share
+GET http://localhost:8000/api/shares/2
+Accept: application/json
+Authorization: Bearer TOKEN
+
+### Share password
+POST http://localhost:8000/api/shares
+Content-Type: application/json
+Authorization: Bearer TOKEN
+
 {
-    "password_id": 1
+    "password_id": 179,
+    "user_id": 410
 }
 
 ### Delete share
