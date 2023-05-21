@@ -9,7 +9,7 @@ Accept: application/json
 Authorization: Bearer TOKEN
 
 ### Show single share
-GET http://localhost:8000/api/shares/2
+GET http://localhost:8000/api/shares/id
 Accept: application/json
 Authorization: Bearer TOKEN
 

@@ -19,8 +19,8 @@ class UserResource extends JsonResource
                 'id' => $this->id,
                 'name' => $this->name,
                 'last_name' => $this->last_name,
-                'is_admin' => $this->is_admin,
                 'email' => $this->email,
+                'is_admin' => $this->is_admin,
                 'created_at' => $this->created_at->format('Y-m-d H:i:s'),
                 'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
             ];
@@ -31,6 +31,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'last_name' => $this->last_name,
             'email' => $this->email,
+            'is_admin' => $this->is_admin,
         ];
     }
 }

@@ -32,7 +32,7 @@ class PasswordController extends Controller
 
     public function show(Password $password)
     {
-        return response(new PasswordResource($password), 200);
+        return response(["password" => new PasswordResource($password), "decrypted_password" => $password->decrypt()], 200);
     }
 
     public function store(Request $request)

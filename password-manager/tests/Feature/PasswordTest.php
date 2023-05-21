@@ -42,18 +42,12 @@ class PasswordTest extends TestCase
                 "*" => [
                     'id',
                     'name',
-                    'password',
-                    'created_at',
-                    'updated_at'
                 ]
             ],
             'shared' => [
                 "*" => [
                     'id',
                     'name',
-                    'password',
-                    'created_at',
-                    'updated_at'
                 ]
             ]
         ]);
@@ -95,9 +89,6 @@ class PasswordTest extends TestCase
             "*" => [
                 'id',
                 'name',
-                'password',
-                'created_at',
-                'updated_at'
             ]
         ]);
 
@@ -151,11 +142,11 @@ class PasswordTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'id',
-            'name',
-            'password',
-            'created_at',
-            'updated_at'
+            'password' => [
+                'id',
+                'name',
+            ],
+            'decrypted_password'
         ]);
 
         $password->delete();
@@ -173,11 +164,16 @@ class PasswordTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'id',
-            'name',
-            'password',
-            'created_at',
-            'updated_at'
+            'password' => [
+                'id',
+                'name',
+                'user' => [
+                    'id',
+                    'name',
+                    'email',
+                ]
+            ],
+            'decrypted_password',
         ]);
 
         $password->delete();
@@ -212,16 +208,12 @@ class PasswordTest extends TestCase
         $response->assertJsonStructure([
             'id',
             'name',
-            'password',
-            'created_at',
-            'updated_at'
         ]);
 
         $password = Password::find($response->json('id'));
 
         $this->assertNotNull($password);
         $this->assertEquals($response->json('name'), $password->name);
-        $this->assertEquals($response->json('password'), $password->password);
 
         $user->delete();
         $password->delete();
@@ -243,9 +235,6 @@ class PasswordTest extends TestCase
         $response->assertJsonStructure([
             'id',
             'name',
-            'password',
-            'created_at',
-            'updated_at'
         ]);
 
         $password->delete();
@@ -268,9 +257,6 @@ class PasswordTest extends TestCase
         $response->assertJsonStructure([
             'id',
             'name',
-            'password',
-            'created_at',
-            'updated_at'
         ]);
 
         $password->delete();

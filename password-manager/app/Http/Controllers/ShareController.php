@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Share;
 use App\Models\Password;
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Resources\ShareResource;
 use Mockery\Generator\StringManipulation\Pass\Pass;
 
 class ShareController extends Controller
@@ -19,19 +20,22 @@ class ShareController extends Controller
     {
         $shares = Share::where('user_id', $request->user()->id)->get();
 
-        return response()->json($shares, 200);
+        return response()->json(ShareResource::collection($shares), 200);
     }
 
     public function indexAdmin(Request $request)
     {
         $shares = Share::all();
 
-        return response()->json($shares, 200);
+        return response()->json(ShareResource::collection($shares), 200);
     }
 
     public function show(Share $share)
     {
-        return response()->json($share, 200);
+        return response()->json([
+            "share" => new ShareResource($share),
+            "decrypted_password" => $share->password->decrypt()
+        ], 200);
     }
 
     public function store(Request $request)
@@ -67,7 +71,7 @@ class ShareController extends Controller
             'shared_by' => $request->user()->id
         ]);
 
-        return response()->json($share, 201);
+        return response()->json(new ShareResource($share), 201);
     }
 
     public function destroy(Share $share, Request $request)

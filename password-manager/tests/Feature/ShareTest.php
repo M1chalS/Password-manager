@@ -33,10 +33,24 @@ class ShareTest extends TestCase
         $response->assertJsonStructure([
             "*" => [
                 'id',
-                'password_id',
-                'user_id',
-                'created_at',
-                'updated_at'
+                'password' => [
+                    'id',
+                    'name',
+                    'user' => [
+                        'id',
+                        'name',
+                        'email',
+                        'created_at',
+                        'updated_at'
+                    ],
+                ],
+                'user' => [
+                    'id',
+                    'name',
+                    'email',
+                    'created_at',
+                    'updated_at'
+                ],
             ]
         ]);
 
@@ -93,10 +107,20 @@ class ShareTest extends TestCase
         $response->assertJsonStructure([
             "*" => [
                 'id',
-                'password_id',
-                'user_id',
-                'created_at',
-                'updated_at'
+                'password' => [
+                    'id',
+                    'name',
+                    'user' => [
+                        'id',
+                        'name',
+                        'email',
+                    ],
+                ],
+                'user' => [
+                    'id',
+                    'name',
+                    'email',
+                ],
             ]
         ]);
 
