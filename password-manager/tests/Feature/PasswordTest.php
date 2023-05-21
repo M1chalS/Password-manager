@@ -136,7 +136,13 @@ class PasswordTest extends TestCase
         $user = User::factory()->create([
             'is_admin' => true
         ]);
-        $password = Password::factory()->create();
+
+        $response = $this->actingAs($user)->post('/api/passwords', [
+            'name' => 'Test',
+            'password' => 'test1234',
+        ]);
+
+        $password = Password::find($response->json('id'));
 
         $response = $this->actingAs($user)->get("/api/passwords/$password->id");
 
@@ -156,9 +162,13 @@ class PasswordTest extends TestCase
     public function test_show_as_authorized_user(): void
     {
         $user = User::factory()->create();
-        $password = Password::factory()->create([
-            'user_id' => $user->id
+
+        $response = $this->actingAs($user)->post('/api/passwords', [
+            'name' => 'Test',
+            'password' => 'test1234',
         ]);
+
+        $password = Password::find($response->json('id'));
 
         $response = $this->actingAs($user)->get("/api/passwords/$password->id");
 
@@ -292,6 +302,7 @@ class PasswordTest extends TestCase
         $this->assertDatabaseMissing('passwords', ['id' => $password->id]);
 
         $user->delete();
+        $password->delete();
     }
 
     public function test_destroy_as_authorized_user(): void
@@ -307,6 +318,7 @@ class PasswordTest extends TestCase
         $this->assertDatabaseMissing('passwords', ['id' => $password->id]);
 
         $user->delete();
+        $password->delete();
     }
 
     public function test_destroy_as_unauthorized_user(): void
@@ -320,6 +332,7 @@ class PasswordTest extends TestCase
         $this->assertDatabaseHas('passwords', ['id' => $password->id]);
 
         $user->delete();
+        $password->delete();
     }
 
     public function test_decrypt(): void
@@ -334,5 +347,8 @@ class PasswordTest extends TestCase
         $password = Password::find($response->json('id'));
 
         $this->assertEquals('test1234', $password->decrypt());
+
+        $user->delete();
+        $password->delete();
     }
 }

@@ -176,6 +176,7 @@ class UserAccountTest extends TestCase
         $this->assertEquals($user->is_admin, $response->json('is_admin'));
 
         $user->delete();
+        $user2->delete();
     }
 
     public function test_update_as_authorized_user(): void

@@ -182,6 +182,7 @@ class ShareTest extends TestCase
         $share->delete();
         $password->delete();
         $user->delete();
+        $user2->delete();
     }
 
     public function test_unshare_as_sender(): void
@@ -204,6 +205,7 @@ class ShareTest extends TestCase
         $password->delete();
         $user->delete();
         $user2->delete();
+        $share->delete();
     }
 
     public function test_unshare_as_reciver(): void
@@ -227,5 +229,6 @@ class ShareTest extends TestCase
         $password->delete();
         $user->delete();
         $user2->delete();
+        $share->delete();
     }
 }
