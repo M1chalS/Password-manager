@@ -232,19 +232,32 @@ class PasswordTest extends TestCase
     public function test_update_as_admin(): void
     {
         $user = User::factory()->create([
-            'is_admin' => true
+            "is_admin" => true
         ]);
         $password = Password::factory()->create();
 
-        $response = $this->actingAs($user)->put("/api/passwords/$password->id", [
+        $id = $password->id;
+
+        $response = $this->actingAs($user)->put("/api/passwords/$id", [
             'name' => 'new name',
             'password' => 'password4321'
+        ], [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $user->createToken('main')->plainTextToken
         ]);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'id',
             'name',
+            'user' => [
+                'id',
+                'name',
+                'email',
+                'is_admin',
+                'created_at',
+                'updated_at',
+            ]
         ]);
 
         $password->delete();
