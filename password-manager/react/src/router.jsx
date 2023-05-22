@@ -3,6 +3,7 @@ import MainLayout from "./layouts/MainLayout.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import GuestLayout from "./layouts/GuestLayout.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
 
 
 const router = createBrowserRouter([
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
             {
                 path: '/login',
                 element: <LoginPage/>
+            },
+            {
+                path: '/register',
+                element: <RegisterPage/>
             }
         ]
     },

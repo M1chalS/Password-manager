@@ -5,17 +5,17 @@ import {Col, Container, Row} from "react-bootstrap";
 
 const GuestLayout = () => {
     return <Container fluid>
-        <Row className="justify-content-sm-center" style={{height: '15vh'}}>
-            <Col xs={12} sm={10} md={8} lg={7} xl={4}>
+        <Row className="justify-content-sm-center mb-2">
+            <Col xs={12} sm={9} md={7} lg={6} xl={3}>
                 <GuestHeader/>
             </Col>
         </Row>
-        <Row className="flex-fill justify-content-center align-content-center" style={{height: '80vh'}}>
+        <Row className="flex-fill justify-content-center align-content-center" style={{ minHeight: "73vh" }}>
             <Col xs="8" xl="6">
                 <Outlet />
             </Col>
         </Row>
-        <Row style={{height: '5vh'}}>
+        <Row style={{height: '3vh'}}>
             <Col>
                 <Footer/>
             </Col>
