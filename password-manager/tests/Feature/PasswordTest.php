@@ -79,7 +79,7 @@ class PasswordTest extends TestCase
             'shared_by' => $user2->id
         ]);
 
-        $response = $this->actingAs($user)->get('/api/passwords-admin', [], [
+        $response = $this->actingAs($user)->get('/api/passwords-admin/', [], [
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $user->createToken('main')->plainTextToken
         ]);
@@ -117,7 +117,7 @@ class PasswordTest extends TestCase
             'shared_by' => $user2->id
         ]);
 
-        $response = $this->actingAs($user)->get('/api/passwords-admin', [], [
+        $response = $this->actingAs($user)->get('/api/passwords-admin/', [], [
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $user->createToken('main')->plainTextToken
         ]);
