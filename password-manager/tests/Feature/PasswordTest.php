@@ -238,7 +238,7 @@ class PasswordTest extends TestCase
 
         $id = $password->id;
 
-        $response = $this->actingAs($user)->put("/api/passwords/$id", [
+        $response = $this->actingAs($user)->put("/api/passwords/$id/", [
             'name' => 'new name',
             'password' => 'password4321'
         ], [
