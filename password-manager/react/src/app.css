@@ -1,0 +1,19 @@
+:root {
+    --color-primary: #eaf4f4;
+    --color-secoundary: #CCE3DE;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#root {
+    background-color: var(--color-primary);
+}
+
+.mx-25 {
+    margin-left: 25%;
+    margin-right: 25%;
+}
