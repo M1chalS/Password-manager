@@ -1,7 +1,3 @@
-:root {
-    --primary: #cce3de;
-}
-
 * {
     margin: 0;
     padding: 0;
@@ -19,13 +15,19 @@ $theme-colors: (
     "info": #0dcaf0,
     "warning": #ffc107,
     "danger": #dc3545,
-    "white": #b9d7c6,
-    "light": #a4c3b2,
+    "white": #eeefef,
+    "light": #befdcd,
     "black": #090707,
 );
 
 body {
-    background-color: var(--primary) !important;
+    background-color: #eeefef !important;
+}
+
+#root {
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
 }
 
 @import '../node_modules/bootstrap/scss/bootstrap';

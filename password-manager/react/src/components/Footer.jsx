@@ -1,5 +1,5 @@
 const Footer = () => {
-    return <footer className="text-center mb-2 bottom-0">
+    return <footer className="position-absolute bottom-0 text-center w-100 mt-4">
         <p>Michał Szajner© 2023</p>
     </footer>
 }

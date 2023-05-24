@@ -1,5 +1,7 @@
 ## PASSWD
 
+Deployment link (Narazie tylko frontend): [PASSWD](https://passwd-manager.netlify.app/)
+
 ### Technologie
 - Laravel
 - React
