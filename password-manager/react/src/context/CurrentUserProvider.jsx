@@ -1,4 +1,4 @@
-import {createContext, useContext, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 
 const CurrentUserContext = createContext({
     currentUser: null,
@@ -17,8 +17,16 @@ export const CurrentUserProvider = ({children}) => {
             localStorage.setItem('ACCESS_TOKEN', token);
         } else {
             localStorage.removeItem('ACCESS_TOKEN');
+            setUser(null);
         }
     }
+
+    useEffect(() => {
+        if (!localStorage.getItem('ACCESS_TOKEN')) {
+            setToken(null);
+        }
+
+    }, []);
 
     return (
         <CurrentUserContext.Provider value={{

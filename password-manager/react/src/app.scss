@@ -1,6 +1,5 @@
 :root {
-    --primary: #eaf4f4;
-    --secoundary: #CCE3DE;
+    --primary: #cce3de;
 }
 
 * {
@@ -13,6 +12,14 @@
     margin-left: 25%;
     margin-right: 25%;
 }
+
+$theme-colors: (
+    "primary": #cce3de,
+    "secondary": #0a8754,
+    "white": #b9d7c6,
+    "light": #a4c3b2,
+    "black": #090707,
+);
 
 body {
     background-color: var(--primary) !important;
