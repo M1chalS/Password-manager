@@ -9,7 +9,7 @@ const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const { setToken, setUser } = useCurrentUserContext();
+    const { setToken } = useCurrentUserContext();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -21,9 +21,7 @@ const LoginPage = () => {
                 password
             });
 
-            console.log(response.data);
-            setUser(response.data.user);
-            setToken(response.data.token);
+            setToken(response.data.token, response.data.user);
 
             navigate('/');
         } catch (e) {

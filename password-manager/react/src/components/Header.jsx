@@ -1,11 +1,22 @@
-import {Col, Container, Image, Nav, Navbar, NavLink, Row} from "react-bootstrap";
+import {Col, Image, Nav, Navbar, NavLink, Row} from "react-bootstrap";
 import logo from "../assets/icon.png";
 import {Link} from "react-router-dom";
 import {useCurrentUserContext} from "../context/CurrentUserProvider.jsx";
+import passwd from "../api/passwd.js";
 
 const Header = () => {
 
-    const { user } = useCurrentUserContext();
+    const { user, setToken } = useCurrentUserContext();
+
+    const handleLogout = async () => {
+        try {
+            await passwd.delete('/logout');
+
+            setToken(null, null);
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
     return <header className="h-auto bg-light flex-fill rounded-bottom border-bottom border-white">
         <Row className="justify-content-sm-center p-2">
@@ -31,8 +42,9 @@ const Header = () => {
                                 </>
                                 :
                                 <>
-                                    <NavLink active eventKey="3" as={Link} to="/account"><h4>Account</h4></NavLink>
                                     <NavLink active eventKey="4" as={Link} to="/panel"><h4>Panel</h4></NavLink>
+                                    <NavLink active eventKey="3" as={Link} to="/account"><h4>Account</h4></NavLink>
+                                    <NavLink active eventKey="5" onClick={handleLogout}><h4>Logout</h4></NavLink>
                                 </>
                             }
                         </Nav>
