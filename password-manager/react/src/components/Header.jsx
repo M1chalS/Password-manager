@@ -9,15 +9,17 @@ const Header = () => {
 
     return <header className="h-auto bg-light flex-fill rounded-bottom border-bottom border-white">
         <Row className="justify-content-sm-center p-2">
-            <Col xxl={1} xl={1} md={1} sm={2} className="d-none d-sm-block">
+            <Col xl={1} md={2} sm={2} className="d-none d-sm-block">
                 <Link to="/">
                     <Image src={logo} alt="PASSWD" fluid style={{minWidth: "10px", maxWidth: "90px"}}/>
                 </Link>
             </Col>
-            <Col xxl={3} xl={3}  md={4} sm={5} xs={8} className="d-flex justify-content-sm-end justify-content-md-center align-items-sm-start align-items-md-center">
-                <h3 className="text-center text-lg"><strong>PASSWD</strong> <br/> Password Manager</h3>
+            <Col xl={3}  md={4} sm={5} xs={8} className="d-flex justify-content-sm-end justify-content-md-center align-items-sm-start align-items-md-center">
+                <Link to="/" className="text-decoration-none text-black text-opacity-75">
+                    <h3 className="text-center text-lg"><strong>PASSWD</strong> <br/> Password Manager</h3>
+                </Link>
             </Col>
-            <Col xxl={4} md={4} sm={5} xs={4}>
+            <Col md={4} sm={5} xs={4}>
                 <Navbar collapseOnSelect expand="md" className="h-100 d-flex justify-content-end">
                     <Navbar.Toggle aria-controls="navbarScroll" data-bs-target="#navbarScroll"/>
                     <Navbar.Collapse id="navbarScroll">

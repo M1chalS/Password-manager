@@ -1,7 +1,7 @@
 const Footer = () => {
-    return <div className="text-center">
+    return <footer className="text-center mb-2 bottom-0">
         <p>Michał Szajner© 2023</p>
-    </div>
+    </footer>
 }
 
 export default Footer;
