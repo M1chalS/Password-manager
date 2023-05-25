@@ -45,7 +45,7 @@ class UserAccountController extends Controller
         $user->update($request->validate([
             'name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|unique:users,email',
+            'email' => 'required|unique:users,email,' . $user->id,
             'password' => 'nullable',
             'is_admin' => 'boolean|nullable'
         ]));

@@ -92,17 +92,19 @@ class ShareTest extends TestCase
         ]);
         $share1 = Share::factory()->create([
             'password_id' => $password->id,
-            'user_id' => $user2->id
+            'user_id' => $user2->id,
+            'shared_by' => $user->id
         ]);
         $share2 = Share::factory()->create([
             'password_id' => $password->id,
-            'user_id' => $user3->id
+            'user_id' => $user3->id,
+            'shared_by' => $user->id
         ]);
 
-        $response = $this->actingAs($user2)->get("/api/shares");
+        $response = $this->actingAs($user)->get("/api/shares");
 
         $response->assertStatus(200);
-        $response->assertJsonCount(1);
+        $response->assertJsonCount(2);
 
         $response->assertJsonStructure([
             "*" => [

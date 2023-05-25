@@ -1,6 +1,8 @@
 import {Button, Container, Image} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {useCurrentUserContext} from "../context/CurrentUserProvider.jsx";
+import instagram from "../assets/instagram.svg";
+import twitter from "../assets/twitter.svg";
 
 const LandingPage = () => {
 
@@ -25,12 +27,12 @@ const LandingPage = () => {
             Follow us on: <br className="d-sm-none d-block"/>
             <Link to="https://www.instagram.com/" target="_blank">
                 <Image className="mx-2"
-                       src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg"
+                       src={instagram}
                        width="30px"/>
             </Link>
             <Link to="https://www.twitter.com" target="_blank">
                 <Image className="mx-2"
-                       src="https://gist.githubusercontent.com/hail2u/2884613/raw/0216962914635ef6e8e5389dd57a0e06f209fd72/twitter-bird.svg"
+                       src={twitter}
                        width="30px"/>
             </Link>
         </p>
