@@ -80,4 +80,13 @@ class ShareController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function destroyByPassword(Password $password, Request $request)
+    {
+        $share = Share::where('password_id', $password->id)->where('user_id', $request->user()->id)->firstOrFail();
+
+        $share->delete();
+
+        return response()->json(null, 204);
+    }
 }

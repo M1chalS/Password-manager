@@ -2,10 +2,13 @@ import PasswdTable from "./PasswdTable.jsx";
 import {Container} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import passwd from "../api/passwd.js";
+import PasswordModal from "./PasswordModal.jsx";
 
 const Shares = () => {
 
     const [shares, setShares] = useState([]);
+    const [show, setShow] = useState(false);
+    const [currentPassword, setCurrentPassword] = useState(null);
 
     const getShares = async () => {
         try {
@@ -16,6 +19,11 @@ const Shares = () => {
         }
     }
 
+    const openPasswordModal = id => {
+        setCurrentPassword(id);
+        setShow(true);
+    };
+
     useEffect(() => {
         getShares();
     }, []);
@@ -23,7 +31,7 @@ const Shares = () => {
     const sharesTableConfig = [
         {
             label: "Password name",
-            render: (data) => data.password.name,
+            render: (data) => <span className="cursor-pointer fw-semibold" onClick={() => openPasswordModal(data.password.id)}>{data.password.name}</span>,
         },
         {
             label: "Shared at",
@@ -42,6 +50,7 @@ const Shares = () => {
         {(shares && shares.length > 0) ?
             <PasswdTable data={shares} config={sharesTableConfig} keyFn={keyFn}/> :
             <h4 className="text-center my-2">You have no shares</h4>}
+        {show && <PasswordModal show={show} onClose={() => setShow(false)} passwordId={currentPassword}/>}
     </Container>
 }
 

@@ -22,6 +22,24 @@ const Passwords = () => {
         getPasswords();
     }, []);
 
+    const handleDeletePassword = async (id) => {
+        try {
+            await passwd.delete(`/passwords/${id}`);
+            getPasswords();
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const handleDeleteShare = async (id) => {
+        try {
+            await passwd.delete(`/shares/password/${id}`);
+            getPasswords();
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     const passwordsTableConfig = [
         {
             label: "Password name",
@@ -61,13 +79,13 @@ const Passwords = () => {
             <Col>
                 <h1 className="text-center mt-1">Your Passwords</h1>
                 {(passwords?.personal && passwords.personal.length > 0) ?
-                    <PasswdTable data={passwords.personal} config={passwordsTableConfig} keyFn={keyFnPasswords}/> :
+                    <PasswdTable data={passwords.personal} config={passwordsTableConfig} keyFn={keyFnPasswords} onDelete={handleDeletePassword}/> :
                     <h4 className="text-center my-2">You have no passwords</h4>}
             </Col>
             <Col>
                 <h1 className="text-center mt-1">Passwords shared with you</h1>
                 {passwords?.shared && passwords.shared.length > 0 ?
-                    <PasswdTable data={passwords.shared} config={sharedTableConfig} keyFn={keyFnShared}/> :
+                    <PasswdTable data={passwords.shared} config={sharedTableConfig} keyFn={keyFnShared} editOn={false} onDelete={handleDeleteShare}/> :
                     <h4 className="text-center my-2">There are no passwords shared with you yet</h4>}
             </Col>
         </Row>
