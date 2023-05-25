@@ -22,21 +22,21 @@ const Header = () => {
 
     return <header className="h-auto flex-fill border-bottom border-black">
         <Row className="justify-content-sm-center p-2">
-            <Col xl={1} md={2} sm={2} className="d-none d-sm-block">
+            <Col xl={1} md={2} sm={2} xs={9}>
                 <Link to="/">
                     <Image src={logo} alt="PASSWD" fluid style={{minWidth: "10px", maxWidth: "90px"}}/>
                 </Link>
             </Col>
-            <Col xl={4}  md={4} sm={5} xs={8} className="d-flex justify-content-sm-end justify-content-md-start align-items-sm-start align-items-md-center">
+            <Col xl={4}  md={4} sm={5} className="d-none d-sm-flex justify-content-sm-end justify-content-md-start align-items-sm-start align-items-md-center">
                 <Link to="/" className="text-decoration-none text-black text-opacity-75">
                     <h3 className="text-center text-lg"><strong>PASSWD</strong> <br/> Password Manager</h3>
                 </Link>
             </Col>
-            <Col md={4} sm={5} xs={4}>
+            <Col md={4} sm={5} xs={3}>
                 <Navbar collapseOnSelect expand="md" className="h-100 d-flex justify-content-end">
                     <Navbar.Toggle aria-controls="navbarScroll" data-bs-target="#navbarScroll"/>
                     <Navbar.Collapse id="navbarScroll">
-                        <Nav className="w-100 justify-content-end">
+                        <Nav className="w-100 justify-content-end text-right pr-2">
                             {!user ?
                                 <>
                                     <NavLink active eventKey="1" as={Link} to="/login"><h4>Login</h4></NavLink>
