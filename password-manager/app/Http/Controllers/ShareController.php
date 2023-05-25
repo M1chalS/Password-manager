@@ -18,7 +18,7 @@ class ShareController extends Controller
 
     public function index(Request $request)
     {
-        $shares = Share::where('user_id', $request->user()->id)->get();
+        $shares = Share::where('shared_by', $request->user()->id)->get();
 
         return response()->json(ShareResource::collection($shares), 200);
     }

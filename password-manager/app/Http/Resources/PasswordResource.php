@@ -21,6 +21,7 @@ class PasswordResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "user" => new UserResource($user),
+            "created_at" => $this->created_at,
         ];
     }
 }

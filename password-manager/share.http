@@ -19,8 +19,8 @@ Content-Type: application/json
 Authorization: Bearer TOKEN
 
 {
-    "password_id": 179,
-    "user_id": 410
+    "password_id": 9,
+    "user_id": 2
 }
 
 ### Delete share

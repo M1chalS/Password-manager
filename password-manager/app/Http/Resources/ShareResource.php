@@ -23,7 +23,8 @@ class ShareResource extends JsonResource
             "id" => $this->id,
             "user" => new UserResource($user),
             "shared_by" => new UserResource($userShared),
-            "password" => new PasswordResource($this->password)
+            "password" => new PasswordResource($this->password),
+            "created_at" => $this->created_at,
         ];
     }
 }
