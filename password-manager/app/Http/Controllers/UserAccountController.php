@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Hash;
 
 class UserAccountController extends Controller
 {
@@ -44,16 +45,41 @@ class UserAccountController extends Controller
         $user->update($request->validate([
             'name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|unique:users,email,' . $user->id,
-            'password' => 'required',
+            'email' => 'required|unique:users,email',
+            'password' => 'nullable',
             'is_admin' => 'boolean|nullable'
         ]));
+
+        if ($request->password) {
+            $user->password = bcrypt($request->password);
+            $user->save();
+        }
+
+        return response(new UserResource($user), 200);
+    }
+
+    public function updatePassword(User $user, Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'password' => 'required|confirmed',
+        ]);
+
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json([
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'old_password' => ['The old password is incorrect.']
+                ]
+            ], 422);
+        }
 
         $user->password = bcrypt($request->password);
         $user->save();
 
         return response(new UserResource($user), 200);
     }
+
 
     public function destroy(User $user)
     {

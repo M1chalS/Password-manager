@@ -1,23 +1,53 @@
 import {Button, Container, Form} from "react-bootstrap";
 import {useState} from "react";
 import {useCurrentUserContext} from "../context/CurrentUserProvider.jsx";
+import passwd from "../api/passwd.js";
 
 const UserAccountPage = () => {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
+
+    const {user, setUser} = useCurrentUserContext();
+
+    const [firstName, setFirstName] = useState(user.name);
+    const [lastName, setLastName] = useState(user.last_name);
+    const [email, setEmail] = useState(user.email);
     const [oldPassword, setOldPassword] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-    const {user} = useCurrentUserContext();
-
     const handleSubmitUserForm = async (e) => {
         e.preventDefault();
+
+        try {
+            const response = await passwd.put("/users/" + user.id, {
+                name: firstName,
+                last_name: lastName,
+                email: email
+            });
+
+            setUser(response.data);
+
+            console.log(response.data);
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
 
     const handleSubmitPasswordForm = async (e) => {
         e.preventDefault();
+
+        try {
+            const response = await passwd.put("/users/password/" + user.id, {
+                old_password: oldPassword,
+                password,
+                password_confirmation: passwordConfirmation,
+            });
+
+            console.log(response.data);
+        }
+        catch (e) {
+            console.log(e);
+        }
     };
 
     return <Container fluid className="w-75 mb-4">
@@ -41,9 +71,7 @@ const UserAccountPage = () => {
             <Form.Group controlId="formBasicEmail" className="mb-4">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control type="email" placeholder="Enter your email address"
-                              value={email} onChange={(event) => {
-                    setEmail(event.target.value)
-                }}/>
+                              value={email} onChange={(event) => setEmail(event.target.value)}/>
             </Form.Group>
             <div className="mb-4 text-center">
                 <Button type="submit" size="lg">Change my personal data</Button>

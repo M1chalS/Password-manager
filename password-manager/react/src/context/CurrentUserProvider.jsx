@@ -8,19 +8,27 @@ const CurrentUserContext = createContext({
 })
 
 export const CurrentUserProvider = ({children}) => {
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
+    const [user, _setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
     const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN') || null);
 
     const setToken = async (token, user) => {
         _setToken(token);
-        setUser(user);
         if (token) {
             localStorage.setItem('ACCESS_TOKEN', token);
-            localStorage.setItem('user', JSON.stringify(user));
+            setUser(user);
         } else {
             localStorage.removeItem('ACCESS_TOKEN');
-            localStorage.removeItem('user');
             setUser(null);
+        }
+    }
+
+    const setUser = (user) => {
+        _setUser(user);
+
+        if(user) {
+            localStorage.setItem('user', JSON.stringify(user));
+        } else {
+            localStorage.removeItem('user');
         }
     }
 

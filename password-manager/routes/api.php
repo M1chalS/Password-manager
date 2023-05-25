@@ -20,6 +20,7 @@ use App\Http\Controllers\UserAccountController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::delete('logout', [AuthController::class, 'destroy'])->name('logout');
+    Route::put('users/password/{user}', [UserAccountController::class, 'updatePassword'])->name('update.password');
     Route::apiResource('passwords', PasswordController::class);
     Route::apiResource('users', UserAccountController::class)->only(['show', 'update']);
     Route::apiResource('shares', ShareController::class)->except(['update']);
