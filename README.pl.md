@@ -5,44 +5,44 @@
 
 Deployment link: [PASSWD](https://passwd-manager.netlify.app/)
 
-### Technologies
+### Technologie
 - Laravel
 - React
 - MySQL
 
 ### Opis
-Application allows users to create, edit and delete passwords, and then send them between registered users.
-The application uses an author's algorithm for two-way password encryption.
+Aplikacja umożliwia użytkownikom tworzenie, edytowanie i usuwanie haseł, a następnie przesyłanie ich pomiędzy zarejestrowanymi użytkownikami.
+Aplikacja wykorzystuje autorski algorytm dwustronnego szyfrowania haseł.
 
-Concept file: [concept](concept.md)
+Plik konceptu: [concept](concept.md)
 
 ### Setup
 
-1. Clone repository
-2. Install required dependencies
+1. Sklonuj repozytorium
+2. Zainstaluj wymagane zależności
     ```bash
     composer install
     ```
-3. Create .env file based on .env.example
-4. Generate application key
+3. Stwórz plik .env na podstawie .env.example
+4. Wygeneruj klucz aplikacji
     ```bash
     php artisan key:generate
     ```
-5. Run migrations
+5. Uruchom migracje
     ```bash
     php artisan migrate
     ```
-6. Start server
+6. Uruchom serwer
     ```bash
     php artisan serve
     ```
-7. Go to the /react folder and install dependencies
+7. Wejdź do folderu react i zainstaluj zależności
     ```bash
     cd react
     npm run install
     npm run dev
     ```
 
-8. App runs on: http://localhost:4000
+8. Aplikacja pracuje na  http://localhost:4000
 
-*By [Michał Szajner](https://github.com/M1chalS)*
+*Stworzone przez [Michał Szajner](https://github.com/M1chalS)*
