@@ -16,7 +16,8 @@ class UserAccountController extends Controller
 
     public function index()
     {
-        return response(UserResource::collection(User::all()), 200);
+        $users = User::latest()->filter(request(['search']))->get();
+        return response(UserResource::collection($users, 200));
     }
 
     public function show(User $user)

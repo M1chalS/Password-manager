@@ -55,4 +55,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Share::class, 'user_id');
     }
+
+    public function scopeFilter($query, array $filters): void
+    {
+        if ($filters['search'] ?? false) {
+            $query->where('name', 'like', '%' . request('search') . '%')
+                ->orWhere('last_name', 'like', '%' . request('search') . '%')
+                ->orWhere('email', 'like', '%' . request('search') . '%');
+        }
+    }
 }

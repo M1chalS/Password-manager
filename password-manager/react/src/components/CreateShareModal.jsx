@@ -1,4 +1,4 @@
-import {Button, Form, Modal, Row} from "react-bootstrap";
+import {Button, Col, Form, Modal, Row} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import passwd from "../api/passwd.js";
 
@@ -28,7 +28,9 @@ const CreateShareModal = ({show, onClose, getData}) => {
 
     const getUsers = async (query) => {
         try {
-            const response = await passwd.get("/users?query=" + query);
+            if(query.length < 3) return setUsers([]);
+
+            const response = await passwd.get("/users?search=" + query);
             setUsers(response.data);
         } catch (e) {
             console.log(e);
@@ -65,22 +67,26 @@ const CreateShareModal = ({show, onClose, getData}) => {
                 <Form>
                     <Form.Group controlId="formBasicPasswordName" className="mb-4">
                         <Form.Label>Search person you want to share your password to</Form.Label>
-                        <Form.Control type="text" placeholder="Enter name or email"
+                        <Form.Control type="text" className="mb-2" placeholder="Enter name or email"
                                       onChange={(event) => {
                                           getUsers(event.target.value)
                                       }}/>
                         <Form.Text>
-                            {users.length > 0 ? users.map((user) => <Row key={user.id}>
-                                {user.name} {user.last_name}
-                            </Row>) : <Row>No passwords</Row>}
+                            <Row>
+                                {users.length > 0 ? users.map((user) => <Col xs={6} key={user.id}>
+                                    {user.name} {user.last_name} ({user.email})
+                                </Col>) : <Col>No users found</Col>}
+                            </Row>
                         </Form.Text>
                     </Form.Group>
-                    <Form.Group controlId="formBasicPassword" className="mb-4">
+                    <Form.Group controlId="formBasicPassword" className="mb-2">
                         <Form.Label>Select password you want to share</Form.Label>
                         <Form.Text>
-                            {passwords.length > 0 ? passwords.map((password) => <Row key={password.id}>
-                                {password.name}
-                            </Row>) : <Row>No passwords</Row>}
+                            <Row>
+                                {passwords.length > 0 ? passwords.map((password) => <Col xs={4} key={password.id}>
+                                    {password.name}
+                                </Col>) : <Col>No passwords</Col>}
+                            </Row>
                         </Form.Text>
                     </Form.Group>
                 </Form>
