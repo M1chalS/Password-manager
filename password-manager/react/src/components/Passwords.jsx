@@ -3,11 +3,13 @@ import passwd from "../api/passwd.js";
 import {Button, Col, Container, Row} from "react-bootstrap";
 import PasswdTable from "./PasswdTable.jsx";
 import PasswordModal from "./PasswordModal.jsx";
+import CreatePasswordModal from "./CreatePasswordModal.jsx";
 
 const Passwords = () => {
     const [passwords, setPasswords] = useState([]);
     const [currentPassword, setCurrentPassword] = useState(null);
-    const [show, setShow] = useState(false);
+    const [showPasswordModal, setShowPasswordModal] = useState(false);
+    const [showCreatePasswordModal, setShowCreatePasswordModal] = useState(false);
     const [loading, setLoading] = useState(true);
 
     const getPasswords = async () => {
@@ -58,7 +60,7 @@ const Passwords = () => {
 
     const openPasswordModal = id => {
         setCurrentPassword(id);
-        setShow(true);
+        setShowPasswordModal(true);
     };
 
     const sharedTableConfig = [
@@ -80,6 +82,10 @@ const Passwords = () => {
     const keyFnPasswords = (data) => data.id;
     const keyFnShared = (data) => data.id;
 
+    const handleCreatePasswordModal = () => {
+        setShowCreatePasswordModal(true);
+    };
+
     return <Container fluid className="w-75">
         <Row>
             {loading ? <h1 className="text-center mt-1">Loading...</h1> :
@@ -87,13 +93,13 @@ const Passwords = () => {
                 <h1 className="text-center mt-1">Your Passwords</h1>
                 {(passwords?.personal && passwords.personal.length > 0) ?
                     <Container className="d-flex flex-column align-items-center">
-                        <Button variant="success" className="w-50 my-2">Add new password+</Button>
+                        <Button variant="success" className="w-50 my-2" onClick={handleCreatePasswordModal}>Add new password+</Button>
                         <PasswdTable data={passwords.personal} config={passwordsTableConfig} keyFn={keyFnPasswords}
                                      onDelete={handleDeletePassword}/>
                     </Container> :
                     <Container className="d-flex flex-column align-items-center">
                         <h4 className="my-2">You have no passwords</h4>
-                        <Button variant="success" className="w-50">Create your first password</Button>
+                        <Button variant="success" className="w-50" onClick={handleCreatePasswordModal}>Create your first password</Button>
                     </Container>}
             </Col>
             <Col>
@@ -104,7 +110,8 @@ const Passwords = () => {
                     <h4 className="text-center my-2">There are no passwords shared with you yet</h4>}
             </Col></>}
         </Row>
-        {show && <PasswordModal show={show} onClose={() => setShow(false)} passwordId={currentPassword}/>}
+        {showPasswordModal && <PasswordModal show={showPasswordModal} onClose={() => setShowPasswordModal(false)} passwordId={currentPassword}/>}
+        {showCreatePasswordModal && <CreatePasswordModal show={showCreatePasswordModal} onClose={() => setShowCreatePasswordModal(false)} getData={getPasswords}/>}
     </Container>
 }
 
