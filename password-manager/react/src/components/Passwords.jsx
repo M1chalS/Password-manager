@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import passwd from "../api/passwd.js";
-import {Col, Container, Row} from "react-bootstrap";
+import {Button, Col, Container, Row} from "react-bootstrap";
 import PasswdTable from "./PasswdTable.jsx";
 import PasswordModal from "./PasswordModal.jsx";
 
@@ -8,12 +8,16 @@ const Passwords = () => {
     const [passwords, setPasswords] = useState([]);
     const [currentPassword, setCurrentPassword] = useState(null);
     const [show, setShow] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const getPasswords = async () => {
         try {
+            setLoading(true);
             const response = await passwd.get("/passwords");
             setPasswords(response.data);
+            setLoading(false);
         } catch (e) {
+            setLoading(false);
             console.log(e);
         }
     }
@@ -43,7 +47,8 @@ const Passwords = () => {
     const passwordsTableConfig = [
         {
             label: "Password name",
-            render: (data) => <span className="cursor-pointer fw-semibold" onClick={() => openPasswordModal(data.id)}>{data.name}</span>,
+            render: (data) => <span className="cursor-pointer fw-semibold"
+                                    onClick={() => openPasswordModal(data.id)}>{data.name}</span>,
         },
         {
             label: "Added on",
@@ -59,7 +64,8 @@ const Passwords = () => {
     const sharedTableConfig = [
         {
             label: "Password name",
-            render: (data) => <span className="cursor-pointer fw-semibold" onClick={() => openPasswordModal(data.id)}>{data.name}</span>,
+            render: (data) => <span className="cursor-pointer fw-semibold"
+                                    onClick={() => openPasswordModal(data.id)}>{data.name}</span>,
         },
         {
             label: "Shared at",
@@ -76,18 +82,27 @@ const Passwords = () => {
 
     return <Container fluid className="w-75">
         <Row>
-            <Col>
+            {loading ? <h1 className="text-center mt-1">Loading...</h1> :
+            <><Col>
                 <h1 className="text-center mt-1">Your Passwords</h1>
                 {(passwords?.personal && passwords.personal.length > 0) ?
-                    <PasswdTable data={passwords.personal} config={passwordsTableConfig} keyFn={keyFnPasswords} onDelete={handleDeletePassword}/> :
-                    <h4 className="text-center my-2">You have no passwords</h4>}
+                    <Container className="d-flex flex-column align-items-center">
+                        <Button variant="success" className="w-50 my-2">Add new password+</Button>
+                        <PasswdTable data={passwords.personal} config={passwordsTableConfig} keyFn={keyFnPasswords}
+                                     onDelete={handleDeletePassword}/>
+                    </Container> :
+                    <Container className="d-flex flex-column align-items-center">
+                        <h4 className="my-2">You have no passwords</h4>
+                        <Button variant="success" className="w-50">Create your first password</Button>
+                    </Container>}
             </Col>
             <Col>
                 <h1 className="text-center mt-1">Passwords shared with you</h1>
                 {passwords?.shared && passwords.shared.length > 0 ?
-                    <PasswdTable data={passwords.shared} config={sharedTableConfig} keyFn={keyFnShared} editOn={false} onDelete={handleDeleteShare}/> :
+                    <PasswdTable data={passwords.shared} config={sharedTableConfig} keyFn={keyFnShared} editOn={false}
+                                 onDelete={handleDeleteShare}/> :
                     <h4 className="text-center my-2">There are no passwords shared with you yet</h4>}
-            </Col>
+            </Col></>}
         </Row>
         {show && <PasswordModal show={show} onClose={() => setShow(false)} passwordId={currentPassword}/>}
     </Container>

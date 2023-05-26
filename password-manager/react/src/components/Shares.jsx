@@ -1,5 +1,5 @@
 import PasswdTable from "./PasswdTable.jsx";
-import {Container} from "react-bootstrap";
+import {Button, Container} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import passwd from "../api/passwd.js";
 import PasswordModal from "./PasswordModal.jsx";
@@ -9,12 +9,16 @@ const Shares = () => {
     const [shares, setShares] = useState([]);
     const [show, setShow] = useState(false);
     const [currentPassword, setCurrentPassword] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const getShares = async () => {
         try {
+            setLoading(true);
             const response = await passwd.get("/shares");
             setShares(response.data);
+            setLoading(false);
         } catch (e) {
+            setLoading(false);
             console.log(e);
         }
     }
@@ -31,7 +35,8 @@ const Shares = () => {
     const sharesTableConfig = [
         {
             label: "Password name",
-            render: (data) => <span className="cursor-pointer fw-semibold" onClick={() => openPasswordModal(data.password.id)}>{data.password.name}</span>,
+            render: (data) => <span className="cursor-pointer fw-semibold"
+                                    onClick={() => openPasswordModal(data.password.id)}>{data.password.name}</span>,
         },
         {
             label: "Shared at",
@@ -45,12 +50,16 @@ const Shares = () => {
 
     const keyFn = (data) => data.id;
 
-    return <Container fluid className="w-50">
-        <h1 className="text-center mt-1">Your shares</h1>
-        {(shares && shares.length > 0) ?
-            <PasswdTable data={shares} config={sharesTableConfig} keyFn={keyFn}/> :
-            <h4 className="text-center my-2">You have no shares</h4>}
-        {show && <PasswordModal show={show} onClose={() => setShow(false)} passwordId={currentPassword}/>}
+    return <Container fluid className="w-50 d-flex flex-column align-items-center">
+            {loading ? <h1 className="text-center mt-1">Loading...</h1> :
+            <>
+                <h1 className="text-center mt-1">Your shares</h1>
+                <Button variant="success" className="w-50 my-2">Share your password</Button>
+                {(shares && shares.length > 0) ?
+                    <PasswdTable data={shares} config={sharesTableConfig} keyFn={keyFn} editOn={false}/> :
+                    <h4 className="text-center my-2">You have no shares</h4>}
+                {show && <PasswordModal show={show} onClose={() => setShow(false)} passwordId={currentPassword}/>}
+            </>}
     </Container>
 }
 
