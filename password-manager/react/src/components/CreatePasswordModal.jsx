@@ -2,7 +2,7 @@ import {Button, Form, Modal} from "react-bootstrap";
 import {useState} from "react";
 import passwd from "../api/passwd.js";
 
-const PasswordModal = ({show, onClose, getData}) => {
+const CreatePasswordModal = ({show, onClose, getData}) => {
 
     const [passwordName, setPasswordName] = useState("");
     const [password, setPassword] = useState("");
@@ -15,7 +15,6 @@ const PasswordModal = ({show, onClose, getData}) => {
                 password: password
             });
 
-            console.log(response);
             onClose();
             getData();
         } catch (e) {
@@ -56,4 +55,4 @@ const PasswordModal = ({show, onClose, getData}) => {
     </Modal>
 };
 
-export default PasswordModal;
+export default CreatePasswordModal;
