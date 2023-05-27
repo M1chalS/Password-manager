@@ -47,9 +47,15 @@ class UserAccountTest extends TestCase
             'Authorization' => 'Bearer ' . $user->createToken('main')->plainTextToken
         ]);
 
-        $response->assertStatus(401);
+        $response->assertStatus(200);
         $response->assertJsonStructure([
-            'message'
+            '*' => [
+                'id',
+                'name',
+                'last_name',
+                'email',
+                'is_admin',
+            ]
         ]);
 
         $user->delete();

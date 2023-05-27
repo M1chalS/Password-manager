@@ -61,7 +61,7 @@ const Shares = () => {
                     <PasswdTable data={shares} config={sharesTableConfig} keyFn={keyFn} editOn={false}/> :
                     <h4 className="text-center my-2">You have no shares</h4>}
                 {showPasswordModal && <PasswordModal show={showPasswordModal} onClose={() => setShowPasswordModal(false)} passwordId={currentPassword}/>}
-                {showCreateShareModal && <CreateShareModal show={showCreateShareModal} onClose={() => setShowCreateShareModal(false)} />}
+                {showCreateShareModal && <CreateShareModal show={showCreateShareModal} onClose={() => setShowCreateShareModal(false)} getData={getShares}/>}
             </>}
     </Container>
 }
