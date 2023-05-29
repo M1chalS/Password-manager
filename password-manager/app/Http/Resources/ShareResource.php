@@ -25,6 +25,7 @@ class ShareResource extends JsonResource
             "shared_by" => new UserResource($userShared),
             "password" => new PasswordResource($this->password),
             "created_at" => $this->created_at,
+            "updated_at" => $this->created_at,
         ];
     }
 }

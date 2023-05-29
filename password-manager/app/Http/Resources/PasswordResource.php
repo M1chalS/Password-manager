@@ -22,6 +22,7 @@ class PasswordResource extends JsonResource
             "name" => $this->name,
             "user" => new UserResource($user),
             "created_at" => $this->created_at,
+            "updated_at" => $this->created_at,
         ];
     }
 }
