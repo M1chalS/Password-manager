@@ -56,8 +56,6 @@ class PasswordController extends Controller
             'name' => 'required|string',
         ]));
 
-        $password->save();
-
         return response(new PasswordResource($password), 200);
     }
 

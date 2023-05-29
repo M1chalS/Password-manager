@@ -36,6 +36,8 @@ const PasswordsAdmin = () => {
         {
             label: "Name",
             render: (data) => data.name,
+            field: "name",
+            type: "text",
         },
         {
             label: "Created by",
@@ -51,10 +53,22 @@ const PasswordsAdmin = () => {
         }
     ];
 
+    const handleEdit = async (e, data) => {
+        try {
+            await passwd.put(`/passwords/${data.id}`, {
+                name: data.name,
+            });
+            await getPasswords();
+        } catch (e) {
+            console.log(e);
+        }
+
+    }
+
     const keyFn = (data) => data.id;
 
     return (<Container className="my-5 text-center">
-            <PasswdTable data={passwords} config={passwordsTableConfig} onDelete={handleDelete} keyFn={keyFn} />
+            <PasswdTable data={passwords} config={passwordsTableConfig} onDelete={handleDelete} keyFn={keyFn} onEdit={handleEdit}/>
         </Container>
     )
 }

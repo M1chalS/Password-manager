@@ -49,16 +49,16 @@ const Passwords = () => {
         }
     }
 
-    const handleEditPassword = async (e, id) => {
+    const handleEditPassword = async (e, data) => {
         try {
-            await passwd.put(`/passwords/${id}`, {
-                name: e.target.value,
+            await passwd.put(`/passwords/${data.id}`, {
+                name: data.name,
             });
 
             setPasswords({ personal:
                 passwords.personal.map(password => {
-                    if (password.id === id) {
-                        password.name = e.target.value;
+                    if (password.id === data.id) {
+                        password.name = data.name;
                     }
 
                     return password;
@@ -85,7 +85,8 @@ const Passwords = () => {
             label: "Password name",
             render: (data) => <span className="cursor-pointer fw-semibold"
                                     onClick={() => openPasswordModal(data.id)}>{data.name}</span>,
-            value: (data) => data.name,
+
+            field: "name",
             type: "text",
         },
         {
