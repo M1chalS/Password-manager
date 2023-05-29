@@ -54,10 +54,8 @@ class PasswordController extends Controller
     {
         $password->update($request->validate([
             'name' => 'required|string',
-            'password' => 'required|string'
         ]));
 
-        $password->encrypt($password->password);
         $password->save();
 
         return response(new PasswordResource($password), 200);

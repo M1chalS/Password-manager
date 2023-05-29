@@ -7,7 +7,7 @@ import CreatePasswordModal from "./CreatePasswordModal.jsx";
 import {useWindowSizeContext} from "../context/WindowSizeProvider.jsx";
 
 const Passwords = () => {
-    const [passwords, setPasswords] = useState([]);
+    const [passwords, setPasswords] = useState({});
     const [currentPassword, setCurrentPassword] = useState(null);
     const [showTime, setShowTime] = useState(true);
     const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -49,6 +49,28 @@ const Passwords = () => {
         }
     }
 
+    const handleEditPassword = async (e, id) => {
+        try {
+            await passwd.put(`/passwords/${id}`, {
+                name: e.target.value,
+            });
+
+            setPasswords({ personal:
+                passwords.personal.map(password => {
+                    if (password.id === id) {
+                        password.name = e.target.value;
+                    }
+
+                    return password;
+                }),
+                shared: passwords.shared,
+            });
+        } catch (e) {
+            console.log(e);
+        }
+
+    }
+
     const handleDeleteShare = async (id) => {
         try {
             await passwd.delete(`/shares/password/${id}`);
@@ -63,6 +85,8 @@ const Passwords = () => {
             label: "Password name",
             render: (data) => <span className="cursor-pointer fw-semibold"
                                     onClick={() => openPasswordModal(data.id)}>{data.name}</span>,
+            value: (data) => data.name,
+            type: "text",
         },
         {
             label: "Added on",
@@ -109,7 +133,7 @@ const Passwords = () => {
                     <Container className="d-flex flex-column align-items-center">
                         <Button variant="primary" className="w-75 my-2" onClick={handleCreatePasswordModal}>Add new password</Button>
                         <PasswdTable data={passwords.personal} config={passwordsTableConfig} keyFn={keyFnPasswords}
-                                     onDelete={handleDeletePassword}/>
+                                     onDelete={handleDeletePassword} onEdit={handleEditPassword}/>
                     </Container> :
                     <Container className="d-flex text-center flex-column align-items-center">
                         <h4 className="my-2">You have no passwords</h4>

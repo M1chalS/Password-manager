@@ -1,8 +1,7 @@
 import {Table} from "react-bootstrap";
-import {MdDelete, MdModeEditOutline} from "react-icons/md";
+import {PasswdTableRow} from "./PasswdTableRow.jsx";
 
-const PasswdTable = ({ data, config, keyFn, editOn = true, deleteOn = true, onDelete }) => {
-
+const PasswdTable = ({ data, config, keyFn, editOn = true, deleteOn = true, onDelete, onEdit }) => {
     const renderedHeaders = config.map((column) => {
         return <th key={column.label}>
             {column.label}
@@ -10,19 +9,8 @@ const PasswdTable = ({ data, config, keyFn, editOn = true, deleteOn = true, onDe
     });
 
     const renderedRows = data.map((rowData) => {
-
-        const renderedCells = config.map(column => {
-            return <td key={column.label} className="p-3">{column.render(rowData)}</td>;
-        });
-
         return (
-            <tr key={keyFn(rowData)}>
-                {renderedCells}
-                {(editOn || deleteOn) && <td>
-                    {editOn && <MdModeEditOutline className="cursor-pointer" style={{ fontSize: "1.5rem" }}/>}
-                    {deleteOn && <MdDelete className="cursor-pointer" style={{fontSize: "1.5rem"}} onClick={() => onDelete(rowData.id)}/>}
-                </td>}
-            </tr>
+            <PasswdTableRow key={keyFn(rowData)} rowData={rowData} editOn={editOn} config={config} deleteOn={deleteOn} onEdit={onEdit} onDelete={onDelete} />
         );
     });
 
