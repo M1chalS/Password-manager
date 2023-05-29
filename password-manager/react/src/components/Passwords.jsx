@@ -4,13 +4,25 @@ import {Button, Col, Container, Row} from "react-bootstrap";
 import PasswdTable from "./PasswdTable.jsx";
 import PasswordModal from "./PasswordModal.jsx";
 import CreatePasswordModal from "./CreatePasswordModal.jsx";
+import {useWindowSizeContext} from "../context/WindowSizeProvider.jsx";
 
 const Passwords = () => {
     const [passwords, setPasswords] = useState([]);
     const [currentPassword, setCurrentPassword] = useState(null);
+    const [showTime, setShowTime] = useState(true);
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [showCreatePasswordModal, setShowCreatePasswordModal] = useState(false);
     const [loading, setLoading] = useState(true);
+
+    const {windowWidth} = useWindowSizeContext();
+
+    useEffect(() => {
+        if (windowWidth < 768) {
+            setShowTime(false);
+        } else {
+            setShowTime(true);
+        }
+    }, [windowWidth]);
 
     const getPasswords = async () => {
         try {
@@ -63,21 +75,23 @@ const Passwords = () => {
         setShowPasswordModal(true);
     };
 
-    const sharedTableConfig = [
-        {
-            label: "Password name",
-            render: (data) => <span className="cursor-pointer fw-semibold"
-                                    onClick={() => openPasswordModal(data.id)}>{data.name}</span>,
-        },
-        {
+    const sharedTableConfig = [];
+
+    sharedTableConfig.push({
+        label: "Password name",
+        render: (data) => <span className="cursor-pointer fw-semibold"
+                                onClick={() => openPasswordModal(data.id)}>{data.name}</span>,
+    }, {
+        label: "Shared to",
+        render: (data) => data.user.name + " " + data.user.last_name,
+    })
+
+    if(showTime) {
+        sharedTableConfig.push({
             label: "Shared at",
             render: (data) => `${new Date(data.created_at).toLocaleTimeString()} on ${new Date(data.created_at).toLocaleDateString()}`,
-        },
-        {
-            label: "Shared by",
-            render: (data) => data.user.name + " " + data.user.last_name,
-        }
-    ];
+        });
+    }
 
     const keyFnPasswords = (data) => data.id;
     const keyFnShared = (data) => data.id;
@@ -86,23 +100,23 @@ const Passwords = () => {
         setShowCreatePasswordModal(true);
     };
 
-    return <Container fluid className="w-75">
+    return <Container fluid className="w-75 mb-5">
         <Row>
             {loading ? <h1 className="text-center mt-1">Loading...</h1> :
-            <><Col>
+            <><Col xs={12} md={6} className="mb-4">
                 <h1 className="text-center mt-1">Your Passwords</h1>
                 {(passwords?.personal && passwords.personal.length > 0) ?
                     <Container className="d-flex flex-column align-items-center">
-                        <Button variant="success" className="w-50 my-2" onClick={handleCreatePasswordModal}>Add new password+</Button>
+                        <Button variant="primary" className="w-75 my-2" onClick={handleCreatePasswordModal}>Add new password</Button>
                         <PasswdTable data={passwords.personal} config={passwordsTableConfig} keyFn={keyFnPasswords}
                                      onDelete={handleDeletePassword}/>
                     </Container> :
-                    <Container className="d-flex flex-column align-items-center">
+                    <Container className="d-flex text-center flex-column align-items-center">
                         <h4 className="my-2">You have no passwords</h4>
-                        <Button variant="success" className="w-50" onClick={handleCreatePasswordModal}>Create your first password</Button>
+                        <Button variant="success" className="w-75 mt-2" onClick={handleCreatePasswordModal}>Create your first password</Button>
                     </Container>}
             </Col>
-            <Col>
+            <Col xs={12} md={6}>
                 <h1 className="text-center mt-1">Passwords shared with you</h1>
                 {passwords?.shared && passwords.shared.length > 0 ?
                     <PasswdTable data={passwords.shared} config={sharedTableConfig} keyFn={keyFnShared} editOn={false}

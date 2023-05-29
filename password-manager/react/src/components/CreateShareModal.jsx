@@ -71,9 +71,9 @@ const CreateShareModal = ({show, onClose, getData}) => {
                                           getUsers(event.target.value)
                                       }}/>
                         <Form.Text>
-                            <Row className="text-center overflow-auto" style={{ height: "20vh" }}>
+                            <Row className="text-left overflow-auto" style={{ height: "20vh" }}>
                                 {users.length > 0 ? users.map((user) => <Col xs={12} key={user.id}>
-                                    <Button variant={selectedUserId === user.id ? "info" : "outline-dark"} onClick={() => setSelectedUserId(user.id)}>{user.name} {user.last_name}({user.email})</Button>
+                                    <Button variant={selectedUserId === user.id ? "info" : "outline-dark"} style={{textAlign: "left"}} onClick={() => setSelectedUserId(user.id)}>{user.name} {user.last_name} ({user.email})</Button>
                                 </Col>) : <Col>No users found</Col>}
                             </Row>
                         </Form.Text>
@@ -81,7 +81,7 @@ const CreateShareModal = ({show, onClose, getData}) => {
                     <Form.Group controlId="formBasicPassword" className="mb-2">
                         <Form.Label>Select password you want to share</Form.Label>
                         <Form.Text>
-                            <Row className="text-center">
+                            <Row className="text-center overflow-auto" style={{ height: "20vh" }}>
                                 {passwords.length > 0 ? passwords.map((password) => <Col xs={6} key={password.id}>
                                     <Button variant={selectedPasswordId === password.id ? "info" : "outline-dark"} onClick={() => setSelectedPasswordId(password.id)}>{password.name}</Button>
                                 </Col>) : <Col>No passwords</Col>}

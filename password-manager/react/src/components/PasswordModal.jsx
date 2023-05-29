@@ -1,4 +1,4 @@
-import {Button, Modal, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {Button, Container, Modal, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {useEffect, useRef, useState} from "react";
 import passwd from "../api/passwd.js";
 import {FaCopy} from "react-icons/fa";
@@ -39,22 +39,22 @@ const PasswordModal = ({show, passwordId, onClose}) => {
         <Modal.Body>
             <h4>Created by: {password.password.user.name} {password.password.user.last_name}</h4>
 
-            <div ref={blackBox} className="m-auto text-center pt-2 border-2 border-dark" style={{ height: "2rem", width: "32rem" }} title={!showDecryptedPassword && ""}>
+            <Container ref={blackBox} className="w-75 m-auto text-center pt-2 border-2 border-dark" style={{ height: "2rem"}} title={!showDecryptedPassword && ""}>
                 <div onClick={() => setShowDecryptedPassword(true)}
                      onMouseLeave={() => setShowDecryptedPassword(false)}>
                 {showDecryptedPassword ?
                     <>
                         <span>{password.decrypted_password}</span>
-                        <FaCopy className="cursor-pointer" onClick={() => {navigator.clipboard.writeText(password.decrypted_password)}}/>
+                        <FaCopy className="cursor-pointer pl-1" onClick={() => {navigator.clipboard.writeText(password.decrypted_password)}}/>
                     </> :
                     <OverlayTrigger placement="bottom" overlay={
                         <Tooltip id="tooltip-blackbox">
                             Click to show password
                         </Tooltip>}>
-                        <div style={{ width: "32rem", height: "2rem", backgroundColor: "black" }}/>
+                        <div style={{ height: "2rem", backgroundColor: "black" }}/>
                     </OverlayTrigger>}
                 </div>
-            </div>
+            </Container>
         </Modal.Body>
         <Modal.Footer>
             <Button onClick={onClose}>Close</Button>
