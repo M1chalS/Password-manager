@@ -71,7 +71,7 @@ const Shares = () => {
             <>
                 <h1 className="text-center mt-1">Your shares</h1>
                 <Container className="d-flex flex-column align-items-center">
-                    <Button variant="success" className="w-100 md:w-50 my-2"
+                    <Button variant="success" className="w-75 my-2"
                             onClick={() => setShowCreateShareModal(true)}>Share your password</Button>
                     {(shares && shares.length > 0) ?
                         <PasswdTable data={shares} config={sharesTableConfig} keyFn={keyFn} editOn={false}/> :

@@ -9,6 +9,10 @@ import PanelPage from "./pages/PanelPage.jsx";
 import Passwords from "./components/Passwords.jsx";
 import Actions from "./components/Actions.jsx";
 import Shares from "./components/Shares.jsx";
+import AdminPanelPage from "./pages/AdminPanelPage.jsx";
+import UsersAdmin from "./components/UsersAdmin.jsx";
+import PasswordsAdmin from "./components/PasswordsAdmin.jsx";
+import SharesAdmin from "./components/SharesAdmin.jsx";
 
 
 const router = createBrowserRouter([
@@ -39,6 +43,24 @@ const router = createBrowserRouter([
                     {
                         path: "/panel/shares",
                         element: <Shares />
+                    }
+                ]
+            },
+            {
+                path: "/admin-panel",
+                element: <AdminPanelPage />,
+                children: [
+                    {
+                        path: "/admin-panel",
+                        element: <UsersAdmin />
+                    },
+                    {
+                        path: "/admin-panel/passwords",
+                        element: <PasswordsAdmin />
+                    },
+                    {
+                        path: "/admin-panel/shares",
+                        element: <SharesAdmin />
                     }
                 ]
             }

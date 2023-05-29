@@ -44,8 +44,9 @@ const Header = () => {
                                 </>
                                 :
                                 <>
-                                    <NavLink active eventKey="4" as={Link} to="/panel"><h4>Panel</h4></NavLink>
-                                    <NavLink active eventKey="3" as={Link} to="/account"><h4>Account</h4></NavLink>
+                                    <NavLink active eventKey="3" as={Link} to="/panel"><h4>Panel</h4></NavLink>
+                                    {user.is_admin === 1 && <NavLink active eventKey="6" as={Link} to="/admin-panel"><h4>Admin panel</h4></NavLink>}
+                                    <NavLink active eventKey="4" as={Link} to="/account"><h4>Account</h4></NavLink>
                                     <NavLink active eventKey="5" onClick={handleLogout}><h4>Logout</h4></NavLink>
                                 </>
                             }

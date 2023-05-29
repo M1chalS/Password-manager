@@ -9,8 +9,8 @@ const Actions = () => {
 
     return <Container fluid className="d-flex flex-column align-items-center mb-5">
         <h1 className="text-center mt-1 mb-2">Actions</h1>
-        <Button variant="primary" className="md:w-50 w-75 m-3" onClick={() => setShowCreatePasswordModal(true)}>Add new password</Button>
-        <Button variant="success" className="md:w-50 w-75 m-3" onClick={() => setShowCreateShareModal(true)}>Share your password</Button>
+        <Button variant="primary" className="w-50 m-3" onClick={() => setShowCreatePasswordModal(true)}>Add new password</Button>
+        <Button variant="success" className="w-50 m-3" onClick={() => setShowCreateShareModal(true)}>Share your password</Button>
 
         <Container className="pt-2" style={{ textAlign: "justify" }}>
             <h3 className="text-center py-2">Info</h3>
