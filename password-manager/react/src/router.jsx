@@ -13,12 +13,15 @@ import AdminPanelPage from "./pages/AdminPanelPage.jsx";
 import UsersAdmin from "./components/UsersAdmin.jsx";
 import PasswordsAdmin from "./components/PasswordsAdmin.jsx";
 import SharesAdmin from "./components/SharesAdmin.jsx";
+import NotFoundPage from "./pages/NotFoundPage.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <MainLayout />,
+        errorElement: <NotFoundPage />,
         children: [
             {
                 path: "/",
@@ -26,11 +29,15 @@ const router = createBrowserRouter([
             },
             {
                 path: "/account",
-                element: <UserAccountPage />
+                element: <ProtectedRoute type="auth">
+                    <UserAccountPage />
+                </ProtectedRoute>
             },
             {
                 path: "/panel",
-                element: <PanelPage />,
+                element: <ProtectedRoute type="auth">
+                    <PanelPage />
+                </ProtectedRoute>,
                 children: [
                     {
                         path: "/panel",
@@ -48,7 +55,9 @@ const router = createBrowserRouter([
             },
             {
                 path: "/admin-panel",
-                element: <AdminPanelPage />,
+                element: <ProtectedRoute type="admin">
+                    <AdminPanelPage />
+                </ProtectedRoute>,
                 children: [
                     {
                         path: "/admin-panel",

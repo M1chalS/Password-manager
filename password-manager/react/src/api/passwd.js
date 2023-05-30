@@ -12,17 +12,4 @@ passwd.interceptors.request.use((config) => {
     return config;
 });
 
-passwd.interceptors.response.use((response) => {
-    return response;
-}, (error) => {
-    const {response} = error;
-    if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem('ACCESS_TOKEN');
-    } else if (response.status === 404) {
-        console.log('404 - Not Found'); // TODO zrobić Not found page
-    }
-
-    throw error;
-});
-
 export default passwd;
