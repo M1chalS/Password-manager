@@ -5,6 +5,7 @@ import passwd from "../api/passwd.js";
 import PasswordModal from "./PasswordModal.jsx";
 import CreateShareModal from "./CreateShareModal.jsx";
 import {useWindowSizeContext} from "../context/WindowSizeProvider.jsx";
+import {useInfoToastContext} from "../context/InfoToastProvider.jsx";
 
 const Shares = () => {
 
@@ -16,6 +17,7 @@ const Shares = () => {
     const [loading, setLoading] = useState(true);
 
     const {windowWidth} = useWindowSizeContext();
+    const {setInfo} = useInfoToastContext();
 
     useEffect(() => {
         if (windowWidth < 768) {
@@ -33,7 +35,7 @@ const Shares = () => {
             setLoading(false);
         } catch (e) {
             setLoading(false);
-            console.log(e);
+            setInfo(e.response.data.message);
         }
     }
 

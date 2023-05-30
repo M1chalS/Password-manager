@@ -7,7 +7,7 @@ const CreatePasswordModal = ({show, onClose, getData}) => {
 
     const [passwordName, setPasswordName] = useState("");
     const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState();
+    const [errors, setErrors] = useState({});
 
     const { setInfo } = useInfoToastContext();
 
@@ -19,6 +19,7 @@ const CreatePasswordModal = ({show, onClose, getData}) => {
                 password: password
             });
 
+            setErrors({});
             setInfo("Password created successfully.");
             onClose();
             getData();

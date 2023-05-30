@@ -14,7 +14,7 @@ const SharesAdmin = () => {
             const response = await passwd.get("/shares-admin");
             setShares(response.data);
         } catch (e) {
-            console.log(e);
+            setInfo(e.response.data.message);
         }
     }
 
@@ -24,7 +24,7 @@ const SharesAdmin = () => {
             await getShares();
             setInfo("Share deleted successfully.");
         } catch (e) {
-            console.log(e);
+            setInfo(e.response.data.message);
         }
     }
 

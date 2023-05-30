@@ -34,7 +34,7 @@ const Passwords = () => {
             setLoading(false);
         } catch (e) {
             setLoading(false);
-            console.log(e);
+            setInfo(e.response.data.message);
         }
     }
 
@@ -52,7 +52,7 @@ const Passwords = () => {
                 shared: passwords.shared,
             });
         } catch (e) {
-            console.log(e);
+            setInfo(e.response.data.message);
         }
     }
 
@@ -74,7 +74,7 @@ const Passwords = () => {
                 shared: passwords.shared,
             });
         } catch (e) {
-            console.log(e);
+            setInfo(e.response.data.message);
         }
 
     }
@@ -89,7 +89,7 @@ const Passwords = () => {
                 shared: passwords.shared.filter(share => share.id !== id),
             });
         } catch (e) {
-            console.log(e);
+            setInfo(e.response.data.message);
         }
     }
 

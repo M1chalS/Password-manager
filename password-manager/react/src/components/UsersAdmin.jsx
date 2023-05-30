@@ -15,7 +15,7 @@ const UsersAdmin = () => {
             const response = await passwd.get("/users");
             setUsers(response.data);
         } catch (e) {
-            console.log(e);
+            setInfo(e.response.data.message);
         }
     }
 
@@ -25,7 +25,7 @@ const UsersAdmin = () => {
             await getUsers();
             setInfo("User deleted successfully.");
         } catch (e) {
-            console.log(e);
+            setInfo(e.response.data.message);
         }
     }
 
@@ -83,7 +83,7 @@ const UsersAdmin = () => {
             await getUsers();
             setInfo("User updated successfully.");
         } catch (e) {
-            console.log(e);
+            setInfo(e.response.data.message);
         }
 
     }

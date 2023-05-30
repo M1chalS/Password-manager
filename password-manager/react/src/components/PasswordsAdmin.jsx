@@ -14,7 +14,7 @@ const PasswordsAdmin = () => {
             const response = await passwd.get("/passwords-admin");
             setPasswords(response.data);
         } catch (e) {
-            console.log(e);
+            setInfo(e.response.data.message);
         }
     }
 
@@ -24,7 +24,7 @@ const PasswordsAdmin = () => {
             await getPasswords();
             setInfo("Password deleted successfully.");
         } catch (e) {
-            console.log(e);
+            setInfo(e.response.data.message);
         }
     }
 
@@ -65,7 +65,7 @@ const PasswordsAdmin = () => {
             await getPasswords();
             setInfo("Password updated successfully.");
         } catch (e) {
-            console.log(e);
+            setInfo(e.response.data.message);
         }
 
     }

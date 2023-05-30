@@ -2,11 +2,14 @@ import {Button, Container, Modal, OverlayTrigger, Tooltip} from "react-bootstrap
 import {useEffect, useRef, useState} from "react";
 import passwd from "../api/passwd.js";
 import {FaCopy} from "react-icons/fa";
+import {useInfoToastContext} from "../context/InfoToastProvider.jsx";
 
 const PasswordModal = ({show, passwordId, onClose}) => {
 
     const [password, setPassword] = useState({});
     const [showDecryptedPassword, setShowDecryptedPassword] = useState(false);
+
+    const {setInfo} = useInfoToastContext();
 
     const blackBox = useRef();
 
@@ -15,7 +18,7 @@ const PasswordModal = ({show, passwordId, onClose}) => {
             const response = await passwd.get(`/passwords/${passwordId}`);
             setPassword(response.data);
         } catch (e) {
-            console.log(e);
+            setInfo(e.response.data.message);
         }
     }
 

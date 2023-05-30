@@ -33,6 +33,7 @@ const RegisterPage = () => {
                 password
             });
 
+            setErrors({});
             setInfo("Your account has been created successfully. Now you can log in.");
             navigate('/login');
         }
@@ -40,8 +41,6 @@ const RegisterPage = () => {
             setErrors(error.response.data.errors);
         }
     }
-
-    console.log(errors);
 
     return  <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-4">

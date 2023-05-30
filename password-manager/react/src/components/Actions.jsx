@@ -24,7 +24,7 @@ const Actions = () => {
             Also you can use <strong>Actions</strong> tab to quickly create new password or share your password with other user.
             <h3 className="text-center py-2">How it works?</h3>
             When you submit your password, it gets encrypted by using
-            <strong><a href="https://www.openssl.org/" className="text-black text-decoration-none" target="_blank"> OpenSLL's </a></strong>
+            <strong><a href="https://www.openssl.org/" className="text-black text-decoration-none" target="_blank"> OpenSSL's </a></strong>
             encryption algorithm enhanced by us.
             Then it gets stored in our database. When you want to share your password with other user password gets linked with him and he can see it and decrypt it in his Passwords tab.
         </Container>

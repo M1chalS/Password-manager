@@ -55,8 +55,6 @@ const UserAccountPage = () => {
         }
     };
 
-    console.log(errors);
-
     return <Container fluid className="w-75">
                 <h1 className="text-center text-black mt-2 mb-4">Welcome {user.name} {user.last_name}👋</h1>
         <Form onSubmit={handleSubmitUserForm}>

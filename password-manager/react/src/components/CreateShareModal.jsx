@@ -10,7 +10,7 @@ const CreateShareModal = ({show, onClose, getData}) => {
     const [loading, setLoading] = useState(true);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedPasswordId, setSelectedPasswordId] = useState(null);
-    const [errors, setErrors] = useState([]);
+    const [errors, setErrors] = useState({});
 
     const { setInfo } = useInfoToastContext();
 
@@ -26,7 +26,7 @@ const CreateShareModal = ({show, onClose, getData}) => {
             setLoading(false);
         } catch (e) {
             setLoading(false);
-            console.log(e);
+            setInfo(e.response.data.message);
         }
     }
 
@@ -36,7 +36,7 @@ const CreateShareModal = ({show, onClose, getData}) => {
             const response = await passwd.get("/users?search=" + query);
             setUsers(response.data);
         } catch (e) {
-            console.log(e);
+            setInfo(e.response.data.message);
         }
     }
 
@@ -47,11 +47,11 @@ const CreateShareModal = ({show, onClose, getData}) => {
                 password_id: selectedPasswordId
             });
 
+            setErrors({});
             setInfo("Password shared successfully.");
             onClose();
             getData();
         } catch (e) {
-            console.log(e.response.data.errors);
             setErrors(e.response.data.errors);
         }
     };

@@ -24,6 +24,7 @@ const LoginPage = () => {
                 password
             });
 
+            setError("");
             setInfo("You have successfully logged in.");
             setToken(response.data.token, response.data.user);
             navigate('/');

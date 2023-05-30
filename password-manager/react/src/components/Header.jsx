@@ -19,7 +19,7 @@ const Header = () => {
             navigate('/');
             setToken(null, null);
         } catch (e) {
-            console.log(e);
+            setInfo(e.response.data.message);
         }
     };
 
