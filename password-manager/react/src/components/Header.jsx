@@ -3,16 +3,19 @@ import logo from "../assets/icon.png";
 import {Link, useNavigate} from "react-router-dom";
 import {useCurrentUserContext} from "../context/CurrentUserProvider.jsx";
 import passwd from "../api/passwd.js";
+import {useInfoToastContext} from "../context/InfoToastProvider.jsx";
 
 const Header = () => {
 
     const { user, setToken } = useCurrentUserContext();
     const navigate = useNavigate();
+    const { setInfo } = useInfoToastContext();
 
     const handleLogout = async () => {
         try {
             await passwd.delete('/logout');
 
+            setInfo("Logged out successfully.");
             navigate('/');
             setToken(null, null);
         } catch (e) {
@@ -20,14 +23,14 @@ const Header = () => {
         }
     };
 
-    return <header className="h-auto flex-fill border-bottom border-black">
-        <Row className="justify-content-sm-center p-2">
+    return <header className="sticky-top border-bottom border-black" style={{ backgroundColor: "#eeefef"}}>
+        <Row className="d-flex justify-content-sm-center p-2">
             <Col xl={1} md={2} sm={2} xs={9}>
                 <Link to="/">
                     <Image src={logo} alt="PASSWD" fluid style={{minWidth: "10px", maxWidth: "90px"}}/>
                 </Link>
             </Col>
-            <Col xl={4}  md={4} sm={5} className="d-none d-sm-flex justify-content-sm-end justify-content-md-start align-items-sm-start align-items-md-center">
+            <Col xl={4}  md={5} sm={5} className="d-none d-sm-flex justify-content-sm-end justify-content-md-start align-items-sm-start align-items-md-center">
                 <Link to="/" className="text-decoration-none text-black text-opacity-75">
                     <h3 className="text-center text-lg"><strong>PASSWD</strong> <br/> Password Manager</h3>
                 </Link>
@@ -36,7 +39,7 @@ const Header = () => {
                 <Navbar collapseOnSelect expand="md" className="h-100 d-flex justify-content-end">
                     <Navbar.Toggle aria-controls="navbarScroll" data-bs-target="#navbarScroll"/>
                     <Navbar.Collapse id="navbarScroll">
-                        <Nav className="w-100 justify-content-end text-right pr-2">
+                        <Nav className="w-100 justify-content-end text-right">
                             {!user ?
                                 <>
                                     <NavLink active eventKey="1" as={Link} to="/login"><h4>Login</h4></NavLink>

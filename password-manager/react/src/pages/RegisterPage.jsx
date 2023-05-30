@@ -2,6 +2,7 @@ import {Button, Form} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import passwd from "../api/passwd.js";
+import {useInfoToastContext} from "../context/InfoToastProvider.jsx";
 
 const RegisterPage = () => {
     const [firstName, setFirstName] = useState("");
@@ -12,6 +13,7 @@ const RegisterPage = () => {
     const [errors, setErrors] = useState({});
 
     const navigate = useNavigate();
+    const { setInfo } = useInfoToastContext();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -31,6 +33,7 @@ const RegisterPage = () => {
                 password
             });
 
+            setInfo("Your account has been created successfully. Now you can log in.");
             navigate('/login');
         }
         catch (error) {

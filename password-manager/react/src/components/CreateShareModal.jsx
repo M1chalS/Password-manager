@@ -1,6 +1,7 @@
-import {Button, Col, Form, Modal, Row} from "react-bootstrap";
+import {Button, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import passwd from "../api/passwd.js";
+import {useInfoToastContext} from "../context/InfoToastProvider.jsx";
 
 const CreateShareModal = ({show, onClose, getData}) => {
 
@@ -9,6 +10,9 @@ const CreateShareModal = ({show, onClose, getData}) => {
     const [loading, setLoading] = useState(true);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedPasswordId, setSelectedPasswordId] = useState(null);
+    const [errors, setErrors] = useState([]);
+
+    const { setInfo } = useInfoToastContext();
 
     useEffect(() => {
         getPasswords();
@@ -28,7 +32,7 @@ const CreateShareModal = ({show, onClose, getData}) => {
 
     const getUsers = async (query) => {
         try {
-            if(query.length < 2) return setUsers([]);
+            if (query.length < 2) return setUsers([]);
             const response = await passwd.get("/users?search=" + query);
             setUsers(response.data);
         } catch (e) {
@@ -43,10 +47,12 @@ const CreateShareModal = ({show, onClose, getData}) => {
                 password_id: selectedPasswordId
             });
 
+            setInfo("Password shared successfully.");
             onClose();
             getData();
         } catch (e) {
-            console.log(e);
+            console.log(e.response.data.errors);
+            setErrors(e.response.data.errors);
         }
     };
 
@@ -71,9 +77,11 @@ const CreateShareModal = ({show, onClose, getData}) => {
                                           getUsers(event.target.value)
                                       }}/>
                         <Form.Text>
-                            <Row className="text-left overflow-auto" style={{ height: "20vh" }}>
+                            <Row className="text-left overflow-auto" style={{height: "20vh"}}>
                                 {users.length > 0 ? users.map((user) => <Col xs={12} key={user.id}>
-                                    <Button variant={selectedUserId === user.id ? "info" : "outline-dark"} style={{textAlign: "left"}} onClick={() => setSelectedUserId(user.id)}>{user.name} {user.last_name} ({user.email})</Button>
+                                    <Button variant={selectedUserId === user.id ? "info" : "outline-dark"}
+                                            style={{textAlign: "left"}}
+                                            onClick={() => setSelectedUserId(user.id)}>{user.name} {user.last_name} ({user.email})</Button>
                                 </Col>) : <Col>No users found</Col>}
                             </Row>
                         </Form.Text>
@@ -81,9 +89,10 @@ const CreateShareModal = ({show, onClose, getData}) => {
                     <Form.Group controlId="formBasicPassword" className="mb-2">
                         <Form.Label>Select password you want to share</Form.Label>
                         <Form.Text>
-                            <Row className="text-center overflow-auto" style={{ height: "20vh" }}>
+                            <Row className="text-center overflow-auto" style={{height: "20vh"}}>
                                 {passwords.length > 0 ? passwords.map((password) => <Col xs={6} key={password.id}>
-                                    <Button variant={selectedPasswordId === password.id ? "info" : "outline-dark"} onClick={() => setSelectedPasswordId(password.id)}>{password.name}</Button>
+                                    <Button variant={selectedPasswordId === password.id ? "info" : "outline-dark"} className="border-1 border-black w-100"
+                                            onClick={() => setSelectedPasswordId(password.id)}>{password.name}</Button>
                                 </Col>) : <Col>No passwords</Col>}
                             </Row>
                         </Form.Text>
@@ -91,8 +100,16 @@ const CreateShareModal = ({show, onClose, getData}) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={handleSave}>Save</Button>
-                <Button variant="danger" onClick={onClose}>Cancel</Button>
+                <Container fluid className="d-flex flex-row justify-content-between">
+                    <div>
+                        <p className="text-danger">{errors.user_id}</p>
+                        <p className="text-danger">{errors.password_id}</p>
+                    </div>
+                    <div className="text-right">
+                        <Button onClick={handleSave} className="mx-1">Save</Button>
+                        <Button variant="danger" onClick={onClose} className="mx-1">Cancel</Button>
+                    </div>
+                </Container>
             </Modal.Footer></> : <Modal.Header closeButton>Ładowanie...</Modal.Header>}
     </Modal>
 };

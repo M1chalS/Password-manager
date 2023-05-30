@@ -66,7 +66,7 @@ const Shares = () => {
 
     const keyFn = (data) => data.id;
 
-    return <Container fluid className="w-75 mb-5">
+    return <Container fluid className="w-75">
         {loading ? <h1 className="text-center mt-1">Loading...</h1> :
             <>
                 <h1 className="text-center mt-1">Your shares</h1>

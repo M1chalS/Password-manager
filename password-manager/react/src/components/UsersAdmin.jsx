@@ -2,10 +2,13 @@ import PasswdTable from "./PasswdTable.jsx";
 import passwd from "../api/passwd.js";
 import {useEffect, useState} from "react";
 import {Container} from "react-bootstrap";
+import {useInfoToastContext} from "../context/InfoToastProvider.jsx";
 
 const UsersAdmin = () => {
 
     const [users, setUsers] = useState([]);
+
+    const {setInfo} = useInfoToastContext();
 
     const getUsers = async () => {
         try {
@@ -20,6 +23,7 @@ const UsersAdmin = () => {
         try {
             await passwd.delete(`/users/${id}`);
             await getUsers();
+            setInfo("User deleted successfully.");
         } catch (e) {
             console.log(e);
         }
@@ -77,6 +81,7 @@ const UsersAdmin = () => {
                 is_admin: data.is_admin,
             });
             await getUsers();
+            setInfo("User updated successfully.");
         } catch (e) {
             console.log(e);
         }
@@ -85,7 +90,7 @@ const UsersAdmin = () => {
 
     const keyFn = (data) => data.id;
 
-	return (<Container className="my-5 text-center">
+	return (<Container className="mt-5 text-center">
             <PasswdTable data={users} config={usersTableConfig} onDelete={handleDelete} keyFn={keyFn} onEdit={handleEdit}/>
     </Container>
 	)

@@ -5,6 +5,7 @@ import PasswdTable from "./PasswdTable.jsx";
 import PasswordModal from "./PasswordModal.jsx";
 import CreatePasswordModal from "./CreatePasswordModal.jsx";
 import {useWindowSizeContext} from "../context/WindowSizeProvider.jsx";
+import {useInfoToastContext} from "../context/InfoToastProvider.jsx";
 
 const Passwords = () => {
     const [passwords, setPasswords] = useState({});
@@ -15,6 +16,7 @@ const Passwords = () => {
     const [loading, setLoading] = useState(true);
 
     const {windowWidth} = useWindowSizeContext();
+    const {setInfo} = useInfoToastContext();
 
     useEffect(() => {
         if (windowWidth < 768) {
@@ -43,7 +45,12 @@ const Passwords = () => {
     const handleDeletePassword = async (id) => {
         try {
             await passwd.delete(`/passwords/${id}`);
-            getPasswords();
+
+            setInfo("Password deleted successfully.");
+            setPasswords({
+                personal: passwords.personal.filter(password => password.id !== id),
+                shared: passwords.shared,
+            });
         } catch (e) {
             console.log(e);
         }
@@ -55,6 +62,7 @@ const Passwords = () => {
                 name: data.name,
             });
 
+            setInfo("Password updated successfully.");
             setPasswords({ personal:
                 passwords.personal.map(password => {
                     if (password.id === data.id) {
@@ -74,7 +82,12 @@ const Passwords = () => {
     const handleDeleteShare = async (id) => {
         try {
             await passwd.delete(`/shares/password/${id}`);
-            getPasswords();
+
+            setInfo("Share deleted successfully.");
+            setPasswords({
+                personal: passwords.personal,
+                shared: passwords.shared.filter(share => share.id !== id),
+            });
         } catch (e) {
             console.log(e);
         }
@@ -125,7 +138,7 @@ const Passwords = () => {
         setShowCreatePasswordModal(true);
     };
 
-    return <Container fluid className="w-75 mb-5">
+    return <Container fluid className="w-75">
         <Row>
             {loading ? <h1 className="text-center mt-1">Loading...</h1> :
             <><Col xs={12} md={6} className="mb-4">
@@ -150,7 +163,7 @@ const Passwords = () => {
             </Col></>}
         </Row>
         {showPasswordModal && <PasswordModal show={showPasswordModal} onClose={() => setShowPasswordModal(false)} passwordId={currentPassword}/>}
-        {showCreatePasswordModal && <CreatePasswordModal show={showCreatePasswordModal} onClose={() => setShowCreatePasswordModal(false)} getData={getPasswords}/>}
+        {showCreatePasswordModal && <CreatePasswordModal show={showCreatePasswordModal} onClose={() => setShowCreatePasswordModal(false)} getData={getPasswords} />}
     </Container>
 }
 

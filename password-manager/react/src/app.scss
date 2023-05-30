@@ -19,10 +19,17 @@ body {
     background-color: #eeefef !important;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 #root {
     min-height: 100vh;
-    overflow-x: hidden;
     position: relative;
+}
+
+.main {
+    min-height: 80vh;
 }
 
 .text-right {

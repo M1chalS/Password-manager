@@ -10,7 +10,7 @@ const GuestLayout = () => {
                 <GuestHeader/>
             </Col>
         </Row>
-        <Row className="flex-fill justify-content-center align-content-center" style={{ minHeight: "73vh" }}>
+        <Row className="flex-fill justify-content-center align-content-center" style={{ minHeight: "68vh" }}>
             <Col xs="8" xl="6">
                 <Outlet />
             </Col>

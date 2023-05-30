@@ -2,9 +2,12 @@ import {useEffect, useState} from "react";
 import passwd from "../api/passwd.js";
 import {Container} from "react-bootstrap";
 import PasswdTable from "./PasswdTable.jsx";
+import {useInfoToastContext} from "../context/InfoToastProvider.jsx";
 
 const SharesAdmin = () => {
     const [shares, setShares] = useState([]);
+
+    const {setInfo} = useInfoToastContext();
 
     const getShares = async () => {
         try {
@@ -19,6 +22,7 @@ const SharesAdmin = () => {
         try {
             await passwd.delete(`/shares/${id}`);
             await getShares();
+            setInfo("Share deleted successfully.");
         } catch (e) {
             console.log(e);
         }
@@ -61,7 +65,7 @@ const SharesAdmin = () => {
 
     const keyFn = (data) => data.id;
 
-    return (<Container className="my-5 text-center">
+    return (<Container className="mt-5 text-center">
             <PasswdTable data={shares} config={sharesTableConfig} keyFn={keyFn} onDelete={handleDelete} editOn={false}/>
         </Container>
     )

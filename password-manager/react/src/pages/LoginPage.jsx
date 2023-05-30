@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import passwd from "../api/passwd.js";
 import {useCurrentUserContext} from "../context/CurrentUserProvider.jsx";
+import {useInfoToastContext} from "../context/InfoToastProvider.jsx";
 
 const LoginPage = () => {
 
@@ -12,6 +13,7 @@ const LoginPage = () => {
 
     const { setToken } = useCurrentUserContext();
     const navigate = useNavigate();
+    const { setInfo } = useInfoToastContext();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,8 +24,8 @@ const LoginPage = () => {
                 password
             });
 
+            setInfo("You have successfully logged in.");
             setToken(response.data.token, response.data.user);
-
             navigate('/');
         } catch (e) {
             setError(e.response.data.message);

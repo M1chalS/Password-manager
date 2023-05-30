@@ -5,10 +5,10 @@ const CurrentUserContext = createContext({
     token: null,
     setUser: () => {},
     setToken: () => {},
-})
+});
 
 export const CurrentUserProvider = ({children}) => {
-    const [user, _setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
+    const [user, _setUser] = useState(JSON.parse(localStorage.getItem('USER')) || null);
     const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN') || null);
 
     const setToken = async (token, user) => {
@@ -26,9 +26,9 @@ export const CurrentUserProvider = ({children}) => {
         _setUser(user);
 
         if(user) {
-            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('USER', JSON.stringify(user));
         } else {
-            localStorage.removeItem('user');
+            localStorage.removeItem('USER');
         }
     }
 

@@ -1,24 +1,29 @@
 import {Button, Form, Modal} from "react-bootstrap";
 import {useState} from "react";
 import passwd from "../api/passwd.js";
+import {useInfoToastContext} from "../context/InfoToastProvider.jsx";
 
 const CreatePasswordModal = ({show, onClose, getData}) => {
 
     const [passwordName, setPasswordName] = useState("");
     const [password, setPassword] = useState("");
+    const [errors, setErrors] = useState();
+
+    const { setInfo } = useInfoToastContext();
 
     const handleSave = async () => {
 
         try {
-            const response = await passwd.post("/passwords", {
+            await passwd.post("/passwords", {
                 name: passwordName,
                 password: password
             });
 
+            setInfo("Password created successfully.");
             onClose();
             getData();
         } catch (e) {
-            console.log(e);
+            setErrors(e.response.data.errors);
         }
     };
 
@@ -40,11 +45,17 @@ const CreatePasswordModal = ({show, onClose, getData}) => {
                     <Form.Label>Name of password</Form.Label>
                     <Form.Control type="text" placeholder="Enter name of your password"
                                   value={passwordName} onChange={(event) => {setPasswordName(event.target.value)}}/>
+                        {errors?.name && <Form.Text className="text-danger">
+                            {errors.name}
+                        </Form.Text>}
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword" className="mb-4">
                     <Form.Label>Password</Form.Label>
                         <Form.Control type="password" placeholder="********"
                                       value={password} onChange={(event) => {setPassword(event.target.value)}}/>
+                        {errors?.password && <Form.Text className="text-danger">
+                            {errors.password}
+                        </Form.Text>}
                     </Form.Group>
                 </Form>
             </Modal.Body>
