@@ -52,7 +52,10 @@ const CreateShareModal = ({show, onClose, getData}) => {
             onClose();
             getData();
         } catch (e) {
-            setErrors(e.response.data.errors);
+            if(e.response.data.errors)
+                setErrors(e.response.data.errors);
+            else
+                setErrors(e.response.data);
         }
     };
 
@@ -102,8 +105,9 @@ const CreateShareModal = ({show, onClose, getData}) => {
             <Modal.Footer>
                 <Container fluid className="d-flex flex-row justify-content-between">
                     <div>
-                        <p className="text-danger">{errors.user_id}</p>
-                        <p className="text-danger">{errors.password_id}</p>
+                        {errors.user_id && <p className="text-danger">{errors.user_id}</p>}
+                        {errors.password_id && <p className="text-danger">{errors.password_id}</p>}
+                        {errors.message && <p className="text-danger">{errors.message}</p>}
                     </div>
                     <div className="text-right">
                         <Button onClick={handleSave} className="mx-1">Save</Button>

@@ -66,6 +66,17 @@ const Shares = () => {
         });
     }
 
+    const handleDelete = async (id) => {
+        try {
+            await passwd.delete(`/shares/${id}`);
+
+            setInfo("Share deleted successfully.");
+            setShares(shares.filter(share => share.id !== id));
+        } catch (e) {
+            setInfo(e.response.data.message);
+        }
+    }
+
     const keyFn = (data) => data.id;
 
     return <Container fluid className="w-75">
@@ -76,7 +87,7 @@ const Shares = () => {
                     <Button variant="success" className="w-75 my-2"
                             onClick={() => setShowCreateShareModal(true)}>Share your password</Button>
                     {(shares && shares.length > 0) ?
-                        <PasswdTable data={shares} config={sharesTableConfig} keyFn={keyFn} editOn={false}/> :
+                        <PasswdTable data={shares} config={sharesTableConfig} keyFn={keyFn} editOn={false} onDelete={handleDelete}/> :
                         <h4 className="text-center my-2">You have no shares</h4>}
                 </Container>
                 {showPasswordModal &&
