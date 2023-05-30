@@ -8,6 +8,7 @@ const LoginPage = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const { setToken } = useCurrentUserContext();
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ const LoginPage = () => {
 
             navigate('/');
         } catch (e) {
-            console.log(e);
+            setError(e.response.data.message);
         }
 
     }
@@ -46,9 +47,14 @@ const LoginPage = () => {
                 <Form.Control type="password" placeholder="********"
                               value={password} onChange={(event) => {setPassword(event.target.value)}}/>
             </Form.Group>
-            <div className="mb-4 text-center">
+                {error && <Form.Group>
+                    <Form.Label className="text-danger">
+                        {error}
+                    </Form.Label>
+                </Form.Group>}
+            <Form.Group className="my-4 text-center">
                 <Button type="submit" size="lg">Log In</Button>
-            </div>
+            </Form.Group>
             <div className="mb-4 text-center">
                 <Link to="/register">Don't have an account? Register here!</Link>
             </div>

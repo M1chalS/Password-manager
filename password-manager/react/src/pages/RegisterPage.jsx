@@ -9,33 +9,36 @@ const RegisterPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
+    const [errors, setErrors] = useState({});
 
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("Form submitted");
 
         if(password !== passwordConfirmation) {
-            alert("Passwords do not match");
+            setErrors({
+                password: "Passwords do not match",
+            });
             return;
         }
 
         try {
-            const response = await passwd.post("/users", {
+            await passwd.post("/users", {
                 "name": firstName,
                 "last_name": lastName,
                 email,
                 password
             });
 
-            console.log(response);
             navigate('/login');
         }
         catch (error) {
-            console.log(error);
+            setErrors(error.response.data.errors);
         }
     }
+
+    console.log(errors);
 
     return  <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-4">
@@ -47,21 +50,33 @@ const RegisterPage = () => {
                 <Form.Label>Your first name</Form.Label>
                 <Form.Control type="text" placeholder="Enter your first name"
                               value={firstName} onChange={(event) => {setFirstName(event.target.value)}}/>
+                {errors?.name && <Form.Text className="text-danger">
+                    {errors.name}
+                </Form.Text>}
             </Form.Group>
             <Form.Group controlId="formBasicLastName" className="mb-4">
                 <Form.Label>Your last name</Form.Label>
                 <Form.Control type="text" placeholder="Enter your last name"
                               value={lastName} onChange={(event) => {setLastName(event.target.value)}}/>
+                {errors?.last_name && <Form.Text className="text-danger">
+                    {errors.last_name}
+                </Form.Text>}
             </Form.Group>
             <Form.Group controlId="formBasicEmail" className="mb-4">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control type="email" placeholder="Enter your email address"
                               value={email} onChange={(event) => {setEmail(event.target.value)}}/>
+                {errors?.email && <Form.Text className="text-danger">
+                    {errors.email}
+                </Form.Text>}
             </Form.Group>
             <Form.Group controlId="formBasicPassword" className="mb-4">
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" placeholder="********"
                               value={password} onChange={(event) => {setPassword(event.target.value)}}/>
+                {errors?.password && <Form.Text className="text-danger">
+                    {errors.password}
+                </Form.Text>}
             </Form.Group>
             <Form.Group controlId="formBasicPasswordConfirmation" className="mb-4">
                 <Form.Label>Confirm password</Form.Label>
