@@ -35,8 +35,8 @@ class PasswordController extends Controller
 
     public function show(Password $password)
     {
-        return response($password->type);
-        // return response(["password" => new PasswordResource($password), "decrypted_password" => $password->decrypt()], 200);
+        // return response($password->type);
+        return response(["password" => new PasswordResource($password), "decrypted_password" => $password->decrypt()], 200);
     }
 
     public function store(Request $request)
@@ -72,11 +72,6 @@ class PasswordController extends Controller
                 ]);
                 break;
         }
-
-        // print_r(array_merge($request->only('name', 'password'), [
-        //     'type_type' => $type,
-        //     'type_id' => $type->id
-        // ]));
 
         $password = $request->user()->passwords()->create([
             'name' => $request->name,

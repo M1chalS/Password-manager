@@ -17,10 +17,29 @@ class PasswordResource extends JsonResource
     {
         $user = User::findOrFail($this->user_id);
 
+        $type_name = "";
+        $type = $this->type;
+
+        switch (get_class($type)) {
+            case 'App\Models\ApplicationPassword':
+                $type_name = "application";
+                break;
+            case 'App\Models\SshFtpPassword':
+                $type_name = "sshftp";
+                break;
+        }
+
+        $type = [
+            "id" => $type->id,
+            "type" => $type_name,
+            "data" => $type->toArray()
+        ];
+
         return [
             "id" => $this->id,
             "name" => $this->name,
             "user" => new UserResource($user),
+            "type" => $type,
             "created_at" => $this->created_at,
             "updated_at" => $this->created_at,
         ];
