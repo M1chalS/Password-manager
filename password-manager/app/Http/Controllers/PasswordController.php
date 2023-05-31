@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Password;
 use Illuminate\Http\Request;
+use App\Models\SshFtpPassword;
+use App\Models\ApplicationPassword;
 use App\Http\Resources\PasswordResource;
+use Illuminate\Validation\ValidationException;
 
 class PasswordController extends Controller
 {
@@ -32,17 +35,55 @@ class PasswordController extends Controller
 
     public function show(Password $password)
     {
-        return response(["password" => new PasswordResource($password), "decrypted_password" => $password->decrypt()], 200);
+        return response($password->type);
+        // return response(["password" => new PasswordResource($password), "decrypted_password" => $password->decrypt()], 200);
     }
 
     public function store(Request $request)
     {
-        $password = $request->user()->passwords()->create(
-            $request->validate([
-                'name' => 'required|string',
-                'password' => 'required|string'
-            ])
-        );
+        $request->validate([
+            'name' => 'required|string',
+            'type' => 'required|string',
+            'password' => 'required|string'
+        ]);
+
+        $type = $request->type;
+
+        switch ($type) {
+            case "application":
+                $type = ApplicationPassword::create(
+                    $request->validate([
+                        'url' => 'required|string'
+                    ])
+                );
+                break;
+            case "sshftp":
+                $type = SshFtpPassword::create(
+                    $request->validate([
+                        'host' => 'required|string',
+                        'port' => 'required|integer',
+                        'username' => 'required|string'
+                    ])
+                );
+                break;
+            default:
+                throw ValidationException::withMessages([
+                    'type' => ['Type does not exist.'],
+                ]);
+                break;
+        }
+
+        // print_r(array_merge($request->only('name', 'password'), [
+        //     'type_type' => $type,
+        //     'type_id' => $type->id
+        // ]));
+
+        $password = $request->user()->passwords()->create([
+            'name' => $request->name,
+            'password' => $request->password,
+            'type_type' => $type->getMorphClass(),
+            'type_id' => $type->id
+        ]);
 
         $password->encrypt($password->password);
         $password->save();
