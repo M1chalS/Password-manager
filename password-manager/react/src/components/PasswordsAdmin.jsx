@@ -44,6 +44,10 @@ const PasswordsAdmin = () => {
             type: "text",
         },
         {
+            label: "Password type",
+            render: (data) => data.type.name === "application" ? "Application" : "SSH/FTP",
+        },
+        {
             label: "Created by",
             render: (data) => data.user.email,
         },

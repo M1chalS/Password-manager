@@ -31,8 +31,8 @@ class PasswordResource extends JsonResource
 
         $type = [
             "id" => $type->id,
-            "type" => $type_name,
-            "type_data" => $type->toArray()
+            "name" => $type_name,
+            "data" => $type->toArray()
         ];
 
         return [

@@ -75,9 +75,9 @@ const Passwords = () => {
             label: "Password name",
             render: (data) => <span className="cursor-pointer fw-semibold"
                                     onClick={() => openPasswordModal(data.id)}>{data.name}</span>,
-
-            field: "name",
-            type: "text",
+        }, {
+            label: "Type",
+            render: (data) => data.type.name === "application" ? "Application" : "SSH/FTP",
         },
         {
             label: "Added on",
@@ -96,7 +96,10 @@ const Passwords = () => {
         label: "Password name",
         render: (data) => <span className="cursor-pointer fw-semibold"
                                 onClick={() => openPasswordModal(data.id)}>{data.name}</span>,
-    }, {
+    },  {
+        label: "Type",
+        render: (data) => data.type.name === "application" ? "Application" : "SSH/FTP",
+    },  {
         label: "Shared to",
         render: (data) => data.user.name + " " + data.user.last_name,
     })
