@@ -80,17 +80,48 @@ class PasswordController extends Controller
             'type_id' => $type->id
         ]);
 
-        $password->encrypt($password->password);
-        $password->save();
-
         return response(new PasswordResource($password), 201);
     }
 
     public function update(Password $password, Request $request)
     {
-        $password->update($request->validate([
+        $formValues = $request->validate([
             'name' => 'required|string',
-        ]));
+            'type' => 'required|string',
+            'password' => 'required|string'
+        ]);
+
+        $type = $password->type;
+
+        if ((get_class($type) !== 'App\Models\ApplicationPassword' && $request->type === "application") || (get_class($type) !== 'App\Models\SshFtpPassword' && $request->type === "sshftp")) {
+            throw ValidationException::withMessages([
+                'type' => ['You cant modify type of a password.'],
+            ]);
+        }
+
+        switch (get_class($type)) {
+            case 'App\Models\ApplicationPassword':
+                $type->update($request->validate([
+                    'url' => 'required|string'
+                ]));
+                break;
+            case 'App\Models\SshFtpPassword':
+                $type->update($request->validate([
+                    'host' => 'required|string',
+                    'port' => 'required|integer',
+                    'username' => 'required|string'
+                ]));
+                break;
+            default:
+                throw ValidationException::withMessages([
+                    'type' => ['Type does not exist.'],
+                ]);
+                break;
+        }
+
+        $password->update($formValues);
+        $password->encrypt($password->password);
+        $password->save();
 
         return response(new PasswordResource($password), 200);
     }
