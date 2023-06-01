@@ -80,6 +80,9 @@ class PasswordController extends Controller
             'type_id' => $type->id
         ]);
 
+        $password->encrypt($password->password);
+        $password->save();
+
         return response(new PasswordResource($password), 201);
     }
 
