@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ApplicationPassword extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['url'];
 
     public function password()
