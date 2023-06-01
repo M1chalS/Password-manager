@@ -32,7 +32,7 @@ class PasswordResource extends JsonResource
         $type = [
             "id" => $type->id,
             "type" => $type_name,
-            "data" => $type->toArray()
+            "type_data" => $type->toArray()
         ];
 
         return [
