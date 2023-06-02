@@ -90,26 +90,17 @@ class PasswordController extends Controller
     {
         $formValues = $request->validate([
             'name' => 'required|string',
-            'type' => 'required|string',
             'password' => 'required|string'
         ]);
 
-        $type = $password->type;
-
-        if ((get_class($type) !== 'App\Models\ApplicationPassword' && $request->type === "application") || (get_class($type) !== 'App\Models\SshFtpPassword' && $request->type === "sshftp")) {
-            throw ValidationException::withMessages([
-                'type' => ['You cant modify type of a password.'],
-            ]);
-        }
-
-        switch (get_class($type)) {
+        switch (get_class($password->type)) {
             case 'App\Models\ApplicationPassword':
-                $type->update($request->validate([
+                $password->type->update($request->validate([
                     'url' => 'required|string'
                 ]));
                 break;
             case 'App\Models\SshFtpPassword':
-                $type->update($request->validate([
+                $password->type->update($request->validate([
                     'host' => 'required|string',
                     'port' => 'required|integer',
                     'username' => 'required|string'
