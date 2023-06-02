@@ -46,6 +46,10 @@ const SharesAdmin = () => {
             render: (data) => data.password.name,
         },
         {
+            label: "Password type",
+            render: (data) => data.password.type.name === "application" ? "Application" : "SSH/FTP",
+        },
+        {
             label: "Receiver",
             render: (data) => data.user.email,
         },

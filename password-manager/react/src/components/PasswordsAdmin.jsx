@@ -44,6 +44,10 @@ const PasswordsAdmin = () => {
             type: "text",
         },
         {
+            label: "Password type",
+            render: (data) => data.type.name === "application" ? "Application" : "SSH/FTP",
+        },
+        {
             label: "Created by",
             render: (data) => data.user.email,
         },
@@ -59,7 +63,7 @@ const PasswordsAdmin = () => {
 
     const handleEdit = async (e, data) => {
         try {
-            await passwd.put(`/passwords/${data.id}`, {
+            await passwd.put(`/passwords-admin/${data.id}`, {
                 name: data.name,
             });
             await getPasswords();

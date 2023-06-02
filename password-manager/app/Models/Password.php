@@ -7,16 +7,17 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Contracts\Encryption\DecryptException;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Password extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'password'];
+    protected $fillable = ['name', 'password', 'type_type', 'type_id'];
 
     public function owner(): BelongsTo
     {
@@ -69,5 +70,10 @@ class Password extends Model
         } catch (DecryptException $e) {
             throw new DecryptException("Decryption error");
         }
+    }
+
+    public function type(): MorphTo
+    {
+        return $this->morphTo();
     }
 }

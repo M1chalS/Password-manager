@@ -100,6 +100,7 @@ class PasswordTest extends TestCase
     //     $share->delete();
     // }
 
+
     public function test_index_for_admin_as_user(): void
     {
         $user = User::factory()->create();
@@ -141,6 +142,8 @@ class PasswordTest extends TestCase
         $response = $this->actingAs($user)->post('/api/passwords', [
             'name' => 'Test',
             'password' => 'test1234',
+            'type' => 'application',
+            'url' => 'https://test.com',
         ]);
 
         $password = Password::find($response->json('id'));
@@ -167,6 +170,8 @@ class PasswordTest extends TestCase
         $response = $this->actingAs($user)->post('/api/passwords', [
             'name' => 'Test',
             'password' => 'test1234',
+            'type' => 'application',
+            'url' => 'https://test.com',
         ]);
 
         $password = Password::find($response->json('id'));
@@ -213,6 +218,8 @@ class PasswordTest extends TestCase
         $response = $this->actingAs($user)->post('/api/passwords', [
             'name' => 'Test',
             'password' => 'test1234',
+            'type' => 'application',
+            'url' => 'https://test.com',
         ]);
 
         $response->assertStatus(201);
@@ -274,7 +281,9 @@ class PasswordTest extends TestCase
 
         $response = $this->actingAs($user)->put("/api/passwords/$password->id", [
             'name' => 'new name',
-            'password' => 'password4321'
+            'password' => 'password4321',
+            'type' => 'application',
+            'url' => 'https://test.com',
         ]);
 
         $response->assertStatus(200);
@@ -356,6 +365,8 @@ class PasswordTest extends TestCase
         $response = $this->actingAs($user)->post('/api/passwords', [
             'name' => 'Test',
             'password' => 'test1234',
+            'type' => 'application',
+            'url' => 'https://test.com',
         ]);
 
         $password = Password::find($response->json('id'));

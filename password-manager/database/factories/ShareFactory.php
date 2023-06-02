@@ -17,9 +17,9 @@ class ShareFactory extends Factory
     public function definition(): array
     {
         return [
-            'password_id' => \App\Models\Password::factory()->create()->id,
-            'user_id' => \App\Models\User::factory()->create()->id,
-            'shared_by' => \App\Models\User::factory()->create()->id,
+            'password_id' => \App\Models\Password::factory(),
+            'user_id' => \App\Models\User::factory(),
+            'shared_by' => \App\Models\User::factory(),
         ];
     }
 }

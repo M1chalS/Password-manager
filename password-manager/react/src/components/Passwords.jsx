@@ -56,29 +56,6 @@ const Passwords = () => {
         }
     }
 
-    const handleEditPassword = async (e, data) => {
-        try {
-            await passwd.put(`/passwords/${data.id}`, {
-                name: data.name,
-            });
-
-            setInfo("Password updated successfully.");
-            setPasswords({ personal:
-                passwords.personal.map(password => {
-                    if (password.id === data.id) {
-                        password.name = data.name;
-                    }
-
-                    return password;
-                }),
-                shared: passwords.shared,
-            });
-        } catch (e) {
-            setInfo(e.response.data.message);
-        }
-
-    }
-
     const handleDeleteShare = async (id) => {
         try {
             await passwd.delete(`/shares/password/${id}`);
@@ -98,9 +75,9 @@ const Passwords = () => {
             label: "Password name",
             render: (data) => <span className="cursor-pointer fw-semibold"
                                     onClick={() => openPasswordModal(data.id)}>{data.name}</span>,
-
-            field: "name",
-            type: "text",
+        }, {
+            label: "Type",
+            render: (data) => data.type.name === "application" ? "Application" : "SSH/FTP",
         },
         {
             label: "Added on",
@@ -119,7 +96,10 @@ const Passwords = () => {
         label: "Password name",
         render: (data) => <span className="cursor-pointer fw-semibold"
                                 onClick={() => openPasswordModal(data.id)}>{data.name}</span>,
-    }, {
+    },  {
+        label: "Type",
+        render: (data) => data.type.name === "application" ? "Application" : "SSH/FTP",
+    },  {
         label: "Shared to",
         render: (data) => data.user.name + " " + data.user.last_name,
     })
@@ -147,7 +127,7 @@ const Passwords = () => {
                     <Container className="d-flex flex-column align-items-center">
                         <Button variant="primary" className="w-75 my-2" onClick={handleCreatePasswordModal}>Add new password</Button>
                         <PasswdTable data={passwords.personal} config={passwordsTableConfig} keyFn={keyFnPasswords}
-                                     onDelete={handleDeletePassword} onEdit={handleEditPassword}/>
+                                     onDelete={handleDeletePassword} editOn={false}/>
                     </Container> :
                     <Container className="d-flex text-center flex-column align-items-center">
                         <h4 className="my-2">You have no passwords</h4>

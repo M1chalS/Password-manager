@@ -55,6 +55,9 @@ const Shares = () => {
         render: (data) => <span className="cursor-pointer fw-semibold"
                                 onClick={() => openPasswordModal(data.password.id)}>{data.password.name}</span>,
     }, {
+        label: "Password type",
+        render: (data) => data.password.type.name === "application" ? "Application" : "SSH/FTP",
+    }, {
         label: "Shared to",
         render: (data) => data.user.name + " " + data.user.last_name,
     })
