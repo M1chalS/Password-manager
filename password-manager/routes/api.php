@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('users', UserAccountController::class)->only(['destroy']);
         Route::get('shares-admin', [ShareController::class, 'indexAdmin'])->name('shares.admin');
         Route::get('passwords-admin', [PasswordController::class, 'indexAdmin'])->name('passwords.admin');
+        Route::put('passwords-admin/{password}', [PasswordController::class, 'updateAdmin'])->name('passwords.updateAdmin');
     });
 });
 

@@ -120,6 +120,15 @@ class PasswordController extends Controller
         return response(new PasswordResource($password), 200);
     }
 
+    public function updateAdmin(Password $password, Request $request)
+    {
+        $password->update($request->validate([
+            'name' => 'required|string',
+        ]));
+
+        return response(new PasswordResource($password), 200);
+    }
+
     public function destroy(Password $password, Request $request)
     {
         $password->delete();

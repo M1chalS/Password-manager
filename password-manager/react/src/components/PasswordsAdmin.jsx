@@ -63,7 +63,7 @@ const PasswordsAdmin = () => {
 
     const handleEdit = async (e, data) => {
         try {
-            await passwd.put(`/passwords/${data.id}`, {
+            await passwd.put(`/passwords-admin/${data.id}`, {
                 name: data.name,
             });
             await getPasswords();
