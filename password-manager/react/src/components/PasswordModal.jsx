@@ -4,7 +4,7 @@ import passwd from "../api/passwd.js";
 import {FaCopy} from "react-icons/fa";
 import {useInfoToastContext} from "../context/InfoToastProvider.jsx";
 import {MdModeEditOutline} from "react-icons/md";
-import {ImCross, RxCross2} from "react-icons/all.js";
+import {RxCross2} from "react-icons/rx";
 
 const PasswordModal = ({show, passwordId, onClose}) => {
 
@@ -82,7 +82,7 @@ const PasswordModal = ({show, passwordId, onClose}) => {
         {password.password ? <><Modal.Header closeButton className="d-flex flex-row">
             <Modal.Title id="contained-modal-title-vcenter">
                 <h2>Password:</h2> {editMode ? <Form.Control type="text" placeholder="Name" value={passwordName}
-                                                    onChange={(event) => setPasswordName(event.target.value)}/>
+                                                             onChange={(event) => setPasswordName(event.target.value)}/>
                 : password.password.name}
             </Modal.Title>
         </Modal.Header>
@@ -156,7 +156,7 @@ const PasswordModal = ({show, passwordId, onClose}) => {
                             <h5>URL:</h5>
                             {!editMode ? <h6 className="pl-1">{password.password.type.data.url}</h6> :
                                 <Form.Control type="text" placeholder="url" value={url} className="w-75 m-auto"
-                                                onChange={(event) => setUrl(event.target.value)}/>}
+                                              onChange={(event) => setUrl(event.target.value)}/>}
                         </Form.Group> :
                         <>
                             <Form.Group className="mt-3">
@@ -174,7 +174,8 @@ const PasswordModal = ({show, passwordId, onClose}) => {
                             <Form.Group>
                                 <h5>Username:</h5>
                                 {!editMode ? <h6 className="pl-1">{password.password.type.data.username}</h6> :
-                                    <Form.Control type="text" placeholder="username" value={username} className="w-75 m-auto"
+                                    <Form.Control type="text" placeholder="username" value={username}
+                                                  className="w-75 m-auto"
                                                   onChange={(event) => setUsername(event.target.value)}/>}
                             </Form.Group>
                         </>}
